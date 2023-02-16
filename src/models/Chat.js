@@ -17,5 +17,16 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         underscored: true
     })
+    //chat//
+    Chat.associate = db => {
+        Chat.belongsTo(db.User, {
+            foreignKey: {
+                name: 'userId',
+                allowNull: false
+            },
+            onDelete: 'RESTRICT'
+        })
+    }
+    //chat//
     return Chat
 }

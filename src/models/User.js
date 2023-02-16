@@ -33,6 +33,67 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
             defaultValue: "user"
         }
-    }, {underscored: true})
+    }, { underscored: true })
+
+    User.associate = db => {
+        User.hasMany(db.Like, {
+            foreignKey: {
+                name: 'userId',
+                allowNull: false
+            },
+            onDelete: 'RESTRICT'
+        })
+        User.hasMany(db.Transaction, {
+            foreignKey: {
+                name: 'userId',
+                allowNull: false
+            },
+            onDelete: 'RESTRICT'
+        })
+        User.hasMany(db.Library, {
+            foreignKey: {
+                name: 'userId',
+                allowNull: false
+            },
+            onDelete: 'RESTRICT'
+        })
+        User.hasMany(db.Review, {
+            foreignKey: {
+                name: 'userId',
+                allowNull: false
+            },
+            onDelete: 'RESTRICT'
+        })
+
+
+        User.hasMany(db.Friend, {
+            as: 'Requester',
+            foreignKey: {
+                name: 'requesterId',
+                allowNull: false
+            },
+            onDelete: 'RESTRICT'
+        })
+
+        User.hasMany(db.Friend, {
+            as: 'Accepter',
+            foreignKey: {
+                name: 'accepterId',
+                allowNull: false
+            },
+            onDelete: 'RESTRICT'
+        })
+
+        //chat//
+        User.hasMany(db.Chat, {
+            foreignKey: {
+                name: 'userId',
+                allowNull: false
+            },
+            onDelete: 'RESTRICT'
+        })
+        //chat//
+
+    }
     return User
 }

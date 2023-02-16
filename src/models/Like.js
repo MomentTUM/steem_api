@@ -13,5 +13,15 @@ module.exports = (sequelize, DataTypes) => {
     }, {
         underscored: true
     })
+
+    Like.associate = db => {
+        Like.belongsTo(db.User, {
+            foreignKey: {
+                name: 'userId',
+                allowNull: false
+            },
+            onDelete: 'RESTRICT'
+        })
+    }
     return Like
 }

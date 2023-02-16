@@ -7,6 +7,16 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true
             }
         }
-    }, {underscored: true})
+    }, { underscored: true })
+
+    Review.associate = db => {
+        Review.belongsTo(db.User, {
+            foreignKey: {
+                name: 'userId',
+                allowNull: false
+            },
+            onDelete: 'RESTRICT'
+        })
+    }
     return Review
 }
