@@ -2,34 +2,37 @@ const Joi = require("joi")
 const validate = require("./validate")
 
 const registerSchema = Joi.object({
-    firstName: Joi.string().trim().required().message({
-        'any.required' : 'first name is required',
-        'string.empty' : 'first name is required',
-        'string.base' : 'first name must be a string'
-    }),
-    lastName: Joi.string().trim().required().message({
-        'string.empty' : 'last name is required'
-    }),
-    email: Joi.string().email({tlds: false}).message({
-        'any.required' : 'email is required',
-        'string.email' : 'must be valid email',
-        'string.empty' : 'email is required'
-    }),
-    password: Joi.string().alphanum().min(6).required().message({
+    emailOrUserName: Joi.alternatives().try(
+        Joi.string().email({tlds: false}),
+        Joi.string().alphanum().min(5).max(30)
+    ).strip()
+    // .message({
+    //     'alternatives.match' : 'must be a valid email or username'
+    // })
+    ,
+    password: Joi.string().alphanum().min(6).required().trim().message({
         'string.empty' : 'password is required',
         'string.alphanum' : 'password must contain number or alphanum',
         'string.min' : 'password must have a least 6'
     }),
-    confirmPassword: Joi.string().valid(Joi.ref('password')).required().message({
+    confirmPassword: Joi.string().valid(Joi.ref('password')).required().trim().message({
         'any.only' : 'confirm password not match',
         'string.empty' : 'confirm password is required'
+    }),
+    email: Joi.forbidden().when('emailOrUserName', {
+        is: Joi.string().email({tlds: false}),
+        then: Joi.string().default(Joi.ref('emailOrUserName'))
+    }),
+    userName: Joi.forbidden().when('emailOrUserName', {
+        is: Joi.string().alphanum().min(5).max(30),
+        then: Joi.string().default(Joi.ref('emailOrUserName'))
     })
 })
-exports.registerSchema = validate(registerSchema)
+exports.validateRegister = validate(registerSchema)
 
 const loginSchema = Joi.object({
-    email: Joi.string().required(),
+    emailOrUserName: Joi.string().required(),
     password: Joi.string().required()
 })
 
-exports.loginSchema = validate(loginSchema)
+exports.validateLogin = validate(loginSchema)

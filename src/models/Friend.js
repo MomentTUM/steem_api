@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Friend = sequelize("Friend", {
+    const Friend = sequelize.define("Friend", {
         status: DataTypes.STRING
     }, {
         underscored: true
