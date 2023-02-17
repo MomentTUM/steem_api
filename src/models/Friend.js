@@ -1,7 +1,7 @@
 const { FRIEND_PENDING, FRIEND_ACCEPTER } = require("../config/constant")
 
 module.exports = (sequelize, DataTypes) => {
-  const Friend = sequelize(
+  const Friend = sequelize.define(
     "Friend",
     {
       status: {

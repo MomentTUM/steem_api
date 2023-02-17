@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const UserImage = sequelize.define(
-    "Profile",
+    "UserImage",
     {
       image: {
         type: DataTypes.STRING,
@@ -23,5 +23,5 @@ module.exports = (sequelize, DataTypes) => {
       onDelete: "RESTRICT",
     });
   };
-  return Profile;
+  return UserImage;
 };

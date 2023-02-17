@@ -90,14 +90,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT",
     });
-
-    Game.hasMany(db.Profile, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-    });
   };
   return Game;
 };
