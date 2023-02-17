@@ -12,10 +12,11 @@ const createError = require("../util/createError");
 exports.register = async (req, res, next) => {
   try {
     const value = validateRegister(req.body);
+    console.log(req.body)
 
     const user = await User.findOne({
       where: {
-        email: value.email || "",
+        [Op.or] : [{email: value.email || ""}, {userName: value.userName || ""}]
       },
     });
     if (user) {
@@ -67,3 +68,21 @@ exports.login = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteUser = async (req, res, next) => {
+  try{ 
+    console.log(req.params)
+    const deleteUser = await User.findOne({
+      where: {
+        id: req.params.userId
+      }
+    })
+    if (!deleteUser) {
+      createError("You not have permission to delete this user")
+    } 
+    await deleteUser.destroy()
+    res.status(200).json({message: "Delete user success"})
+  } catch(err) {
+    next(err)
+  }
+}

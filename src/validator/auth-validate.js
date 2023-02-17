@@ -2,14 +2,15 @@ const Joi = require("joi")
 const validate = require("./validate")
 
 const registerSchema = Joi.object({
-    emailOrUserName: Joi.alternatives().try(
-        Joi.string().email({tlds: false}),
-        Joi.string().alphanum().min(5).max(30)
-    ).strip()
-    // .message({
-    //     'alternatives.match' : 'must be a valid email or username'
-    // })
-    ,
+    userName: Joi.string().alphanum().min(5).max(30).message({
+        "string.empty" : "Username is required",
+        "string.min" : "Username must have a least 5"
+    }),
+    email: Joi.string().email({tlds : false}).message({
+        "any.required" : "Email is required",
+        "string.email" : "Must be a valid email",
+        "string.empty" : "Email is required"
+    }),
     password: Joi.string().alphanum().min(6).required().trim().message({
         'string.empty' : 'password is required',
         'string.alphanum' : 'password must contain number or alphanum',
@@ -18,15 +19,9 @@ const registerSchema = Joi.object({
     confirmPassword: Joi.string().valid(Joi.ref('password')).required().trim().message({
         'any.only' : 'confirm password not match',
         'string.empty' : 'confirm password is required'
-    }),
-    email: Joi.forbidden().when('emailOrUserName', {
-        is: Joi.string().email({tlds: false}),
-        then: Joi.string().default(Joi.ref('emailOrUserName'))
-    }),
-    userName: Joi.forbidden().when('emailOrUserName', {
-        is: Joi.string().alphanum().min(5).max(30),
-        then: Joi.string().default(Joi.ref('emailOrUserName'))
-    })
+    }).strip(),
+
+   
 })
 exports.validateRegister = validate(registerSchema)
 

@@ -6,7 +6,7 @@ const { User } = require("../models");
 module.exports = async (req, res, next) => {
     try {   
         const {authorization} = req.headers
-        if (!authorization || !authorization.startWith("Bearer ")) {
+        if (!authorization || !authorization.startsWith("Bearer ")) {
             createError("You are unauthorized", 401)
         }
 
