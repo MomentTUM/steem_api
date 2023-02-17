@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const GameImage = sequelize.define(
-    "GameImage",
+  const CoverImage = sequelize.define(
+    "Profile",
     {
       image: {
         type: DataTypes.STRING,
@@ -14,16 +14,14 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     },
   );
-
-  GameImage.associate = (db) => {
-    GameImage.belongsTo(db.Game, {
+  CoverImage.associate = (db) => {
+    CoverImage.belongsTo(db.User, {
       foreignKey: {
-        name: "gameId",
+        name: "userId",
         allowNull: false,
       },
       onDelete: "RESTRICT",
     });
   };
-
-  return GameImage;
+  return Profile;
 };
