@@ -36,6 +36,20 @@ module.exports = (sequelize, DataTypes) => {
         },
         onDelete: "RESTRICT"
     })
+    Profile.hasMany(db.WishList, {
+      foreignKey: {
+        name: "profileId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    }),
+    Profile.hasMany(db.WishList, {
+      foreignKey: {
+        name: "profileId",
+        allowNull: false
+      },
+      onDelete: "RESTRICT"
+    })
   };
   return Profile;
 };

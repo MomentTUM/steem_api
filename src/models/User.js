@@ -50,13 +50,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT",
     });
-    User.hasMany(db.Library, {
-      foreignKey: {
-        name: "userId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-    });
     User.hasMany(db.Review, {
       foreignKey: {
         name: "userId",

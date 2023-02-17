@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Library.associate = (db) => {
-    Library.belongsTo(db.User, {
+    Library.belongsTo(db.Profile, {
       foreignKey: {
-        name: "userId",
+        name: "profileId",
         allowNull: false,
       },
       onDelete: "RESTRICT",

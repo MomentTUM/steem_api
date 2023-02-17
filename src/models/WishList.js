@@ -8,9 +8,9 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   WishList.associate = (db) => {
-    WishList.belongsTo(db.User, {
+    WishList.belongsTo(db.Profile, {
       foreignKey: {
-        name: "userId",
+        name: "profileId",
         allowNull: false,
       },
       onDelete: "RESTRICT",
