@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
-  const UserImage = sequelize.define(
-    "UserImage",
+  const Profile = sequelize.define(
+    "Profile",
     {
-      image: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -14,14 +14,21 @@ module.exports = (sequelize, DataTypes) => {
       underscored: true,
     },
   );
-  UserImage.associate = (db) => {
-    UserImage.belongsTo(db.Profile, {
+  Profile.associate = (db) => {
+    Profile.hasMany(db.UserImage, {
       foreignKey: {
         name: "profileId",
         allowNull: false,
       },
       onDelete: "RESTRICT",
-    });
+    }),
+      Profile.hasMany(db.CoverImage,{
+        foreignKey: {
+            name: "profileId",
+            allowNull: false
+        },
+        onDelete: "RESTRICT"
+      });
   };
-  return UserImage;
+  return Profile;
 };

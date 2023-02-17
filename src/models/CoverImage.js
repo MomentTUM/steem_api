@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
   CoverImage.associate = (db) => {
-    CoverImage.belongsTo(db.User, {
+    CoverImage.belongsTo(db.Profile, {
       foreignKey: {
-        name: "userId",
+        name: "profileId",
         allowNull: false,
       },
       onDelete: "RESTRICT",
