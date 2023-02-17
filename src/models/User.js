@@ -102,21 +102,13 @@ module.exports = (sequelize, DataTypes) => {
     });
     //chat//
 
-    User.hasMany(db.UserImage, {
+    User.hasMany(db.Profile, {
       foreignKey: {
         name: "userId",
-        allowNull: false,
+        allowNull: false
       },
-      onDelete: "RESTRICT",
-    });
-
-    User.hasMany(db.CoverImage, {
-      foreignKey: {
-        name: "userId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-    });
+      onDelete: "RESTRICT"
+    })
   };
   return User;
 };

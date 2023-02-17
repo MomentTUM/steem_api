@@ -9,26 +9,33 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: false,
         },
       },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true
+        }
+      },
+      coverImage: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true
+        }
+      }
     },
     {
       underscored: true,
     },
   );
   Profile.associate = (db) => {
-    Profile.hasMany(db.UserImage, {
-      foreignKey: {
-        name: "profileId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-    }),
-      Profile.hasMany(db.CoverImage,{
+    Profile.belongsTo(db.User, {
         foreignKey: {
-            name: "profileId",
+            name: "userId",
             allowNull: false
         },
         onDelete: "RESTRICT"
-      });
+    })
   };
   return Profile;
 };

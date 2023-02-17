@@ -5,6 +5,7 @@ const authRoute = require("./routes/auth-route")
 const authenticateMiddleware = require("./middlewares/authenticate")
 const friendRoute = require("./routes/friend-route")
 const wishListRoute = require("./routes/wishList-route")
+const profileRoute = require("./routes/profile-route")
 // const { sequelize } = require("./models")
 
 // sequelize.sync({ force: true })
@@ -16,6 +17,7 @@ app.use(express.json())
 app.use("/auth", authRoute)
 app.use("/friend", authenticateMiddleware, friendRoute)
 app.use("/wishlist",authenticateMiddleware, wishListRoute)
+app.use("/profile", authenticateMiddleware, profileRoute)
 
 app.use(notFoundMiddleware);
 
