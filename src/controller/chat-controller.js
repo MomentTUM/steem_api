@@ -5,13 +5,10 @@ const cloudinary = require("../util/cloudinary");
 exports.createChat = async (req, res, next) => {
   try {
     const value = req.body;
-
-    if (value.messageImage) {
-      value.messageImage = await cloudinary.upload(value.messageImage);
-    }
-
     value.senderId = req.params.senderId;
     value.receiverId = req.params.receiverId;
+
+    value.messageImage = await cloudinary.upload(req.file?.path, null);
 
     const result = await Chat.create(value);
     res.status(201).json(result);

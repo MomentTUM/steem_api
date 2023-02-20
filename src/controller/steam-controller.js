@@ -41,9 +41,9 @@ exports.getGamesInfo = async (req, res, next) => {
 
   try {
     const gamesInfo = appIds.map((appId) => getGameInfo(appId));
-    console.log(gamesInfo);
+    // console.log(gamesInfo);
     const gamesInfoArray = await Promise.all(gamesInfo);
-    console.log(gamesInfoArray);
+    // console.log(gamesInfoArray);
     res.json(gamesInfoArray);
   } catch (err) {
     console.error(err);
@@ -58,7 +58,7 @@ exports.getAppList = async (req, res, next) => {
       "http://api.steampowered.com/ISteamApps/GetAppList/v0002/?key=STEAMKEY&format=json",
     );
 
-    console.log(response);
+    // console.log(response);
     // res.json(games);
     res.json(1);
   } catch (error) {

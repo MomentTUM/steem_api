@@ -9,6 +9,7 @@ const friendRoute = require("./routes/friend-route");
 const wishListRoute = require("./routes/wishList-route");
 const profileRoute = require("./routes/profile-route");
 const steamRoute = require("./routes/steam-route");
+const chatRoute = require("./routes/chat-route");
 // const { sequelize } = require("./models")
 
 // sequelize.sync({ force: true })
@@ -22,7 +23,8 @@ app.use("/auth", authRoute);
 app.use("/friend", authenticateMiddleware, friendRoute);
 app.use("/wishlist", authenticateMiddleware, wishListRoute);
 app.use("/profile", authenticateMiddleware, profileRoute);
-app.use("/steam", steamRoute);
+app.use("/steam", authenticateMiddleware, steamRoute);
+app.use("/chat", authenticateMiddleware, chatRoute);
 
 app.use(notFoundMiddleware);
 
