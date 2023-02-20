@@ -1,0 +1,25 @@
+const fs = require("fs");
+const { Chat } = require("../models");
+const cloudinary = require("../util/cloudinary");
+
+exports.createChat = async (req, res, next) => {
+  try {
+    const value = req.body;
+
+    if (value.messageImage) {
+      value.messageImage = await cloudinary.upload(value.messageImage);
+    }
+
+    value.senderId = req.params.senderId;
+    value.receiverId = req.params.receiverId;
+
+    const result = await Chat.create(value);
+    res.status(201).json(result);
+  } catch (err) {
+    next(err);
+  } finally {
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+  }
+};
