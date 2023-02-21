@@ -2,19 +2,15 @@ module.exports = (sequelize, DataTypes) => {
   const Like = sequelize.define(
     "Like",
     {
-      like: {
-        type: DataTypes.BOOLEAN,
+      review: {
+        type: DataTypes.ENUM("like", "dislike", "unlike"),
         allowNull: false,
-        defaultValue: true,
-      },
-      dislike: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
+        defaultValue: "unlike",
       },
     },
     {
       underscored: true,
+      paranoid: true
     },
   );
 

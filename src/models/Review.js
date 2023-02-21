@@ -10,7 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    { underscored: true },
+    { underscored: true,
+      paranoid: true },
   );
 
   Review.associate = (db) => {

@@ -1,5 +1,8 @@
 const cors = require("cors");
 const express = require("express");
+const app = express();
+const http = require("http")
+const server = http.createServer(app)
 
 const errorMiddleware = require("./middlewares/error");
 const notFoundMiddleware = require("./middlewares/notFound");
@@ -10,11 +13,11 @@ const wishListRoute = require("./routes/wishList-route");
 const profileRoute = require("./routes/profile-route");
 const steamRoute = require("./routes/steam-route");
 const chatRoute = require("./routes/chat-route");
+const cartRoute = require("./routes/cart-route");
 // const { sequelize } = require("./models")
 
 // sequelize.sync({ force: true })
 
-const app = express();
 
 app.use(cors());
 app.use(express.json());
@@ -25,11 +28,10 @@ app.use("/wishlist", authenticateMiddleware, wishListRoute);
 app.use("/profile", authenticateMiddleware, profileRoute);
 app.use("/steam", authenticateMiddleware, steamRoute);
 app.use("/chat", authenticateMiddleware, chatRoute);
+app.use("/cart", authenticateMiddleware, cartRoute);
 
 app.use(notFoundMiddleware);
 
 app.use(errorMiddleware);
 
-const port = process.env.PORT || 8000;
-
-app.listen(port, () => console.log(`start server at ${port}`));
+module.exports = server

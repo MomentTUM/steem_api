@@ -18,7 +18,7 @@ exports.requestFriend = async (req, res, next) => {
       },
     });
     if (existFriend) {
-      createError("Already friend or pending");
+      createError("Already friend or pending", 400);
     }
     await Friend.create({
       requesterId: req.user.id,
@@ -45,7 +45,7 @@ exports.acceptFriend = async (req, res, next) => {
       },
     );
     if (totalRowUpdate === 0) {
-      createError("This user not send request to you");
+      createError("This user not send request to you", 400);
     }
     res.status(201).json({ message: "Success add friend" });
   } catch (err) {

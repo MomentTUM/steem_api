@@ -38,7 +38,9 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    { underscored: true },
+    { underscored: true,
+      paranoid: true 
+    },
   );
 
   Game.associate = (db) => {
@@ -97,6 +99,12 @@ module.exports = (sequelize, DataTypes) => {
       },
       onDelete: "RESTRICT",
     });
+    Game.hasMany(db.Cart, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false
+      }
+    })
   };
   return Game;
 };

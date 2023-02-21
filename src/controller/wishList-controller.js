@@ -12,13 +12,13 @@ exports.addWishList = async (req, res, next) => {
             }
         })
         if (wishList) {
-            createError("This user already have this game")
+            createError("This user already have this game", 400)
         }
         const result = WishList.create({
             profileId: profileId,
             gameId: gameId
         })
-        res.status(200).json({ result })
+        res.status(201).json({ result })
     } catch(err) {
         next(err)
     }

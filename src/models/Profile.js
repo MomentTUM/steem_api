@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       underscored: true,
+      paranoid: true
     },
   );
   Profile.associate = (db) => {
@@ -49,6 +50,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
       },
       onDelete: "RESTRICT"
+    })
+    Profile.hasMany(db.Cart, {
+      foreignKey: {
+        name: "profileId",
+        allowNull: false
+      }
     })
   };
   return Profile;

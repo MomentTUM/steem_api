@@ -32,7 +32,8 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "user",
       },
     },
-    { underscored: true },
+    { underscored: true,
+      paranoid: true },
   );
 
   User.associate = (db) => {
