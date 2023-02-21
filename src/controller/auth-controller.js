@@ -89,3 +89,7 @@ exports.deleteUser = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getMe = (req, res, next) => {
+  res.status(200).json({ user: req.user });
+};

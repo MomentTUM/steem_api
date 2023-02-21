@@ -20,7 +20,7 @@ exports.getGameInfo = async (req, res, next) => {
 };
 
 exports.getGamesInfo = async (req, res, next) => {
-  const appIds = [730, 570, 582010, 990080, 1196590];
+  const appIds = [730, 570, 582010, 990080, 1196590, 814380];
 
   const getGameInfo = async (appId) => {
     try {
