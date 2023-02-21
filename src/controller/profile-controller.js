@@ -51,8 +51,17 @@ exports.updateProfile = async (req, res, next) => {
   }
 };
 
-exports.getProfile = async (req, res, next) => {
+exports.getProfileById = async (req, res, next) => {
   try {
+    const profile = await Profile.findOne({
+      where: {
+        id: req.params.profileId
+      }
+    })
+    if (!profile) {
+      createError("You not have permission to access this profile")
+    }
+    res.status(200).json({ profile })
   } catch (err) {
     next(err);
   }

@@ -3,7 +3,7 @@ const router = express.Router();
 const upload = require("../middlewares/upload");
 const profileController = require("../controller/profile-controller");
 
-router.get("/", profileController.getProfile);
+router.get("/:profile", profileController.getProfileById);
 
 router.post(
   "/",
