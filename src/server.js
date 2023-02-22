@@ -10,19 +10,16 @@ const io = new Server(server, {
 });
 
 const onlineUser = {};
-const onlineShop = {};
 
 io.use((socket, next) => {
   const userId = socket.handshake.auth.userId;
-  const shopId = socket.handshake.auth.shopId;
   //   socket.userId = userId;
   onlineUser[userId] = socket.id;
-  onlineShop[shopId] = socket.id;
   next();
 });
 
 io.on("connection", (socket) => {
-  console.log(onlineShop, onlineUser);
+  console.log(onlineUser);
   socket.on("send_message", () => {})
 });
 

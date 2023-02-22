@@ -9,10 +9,27 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 const createError = require("../util/createError");
 
+exports.checkEmail = async (req, res, next) => {
+  try {
+    const email = await User.findOne( {
+      where: {
+        email: req.body.email
+      }
+    })
+    if (email) {
+     return res.status(400).json({message: "Email is already used"})
+    }
+    res.status(200).json(0)
+  } catch(err) {
+    next(err)
+  }
+}
+
 exports.register = async (req, res, next) => {
   try {
     const value = validateRegister(req.body);
-    console.log(req.body);
+    // const value = req.body;
+    console.log(value);
 
     const user = await User.findOne({
       where: {
@@ -23,7 +40,7 @@ exports.register = async (req, res, next) => {
       },
     });
     if (user) {
-      createError("Email is already used", 400);
+      createError("Email or username is already used", 400);
     }
     value.password = await bcrypt.hash(value.password, 12);
     await User.create(value);
