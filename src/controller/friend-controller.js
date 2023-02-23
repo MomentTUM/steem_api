@@ -53,6 +53,24 @@ exports.acceptFriend = async (req, res, next) => {
   }
 };
 
+exports.findFriend = async (req, res, next) => {
+  try {
+    const friend = await Friend.findAll({
+      where: {
+        status: FRIEND_ACCEPTER,
+        [Op.or]: [
+          { requesterId: req.params.userId, accepterId: req.user.id },
+          { requesterId: req.user.id, accepterId: req.params.userId },
+        ],
+      },
+    });
+    console.log(friend);
+    res.status(200).json({ friend });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.deleteFriend = async (req, res, next) => {
   try {
     const totalDelete = await Friend.destroy({
