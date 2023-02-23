@@ -13,8 +13,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: false
-        }
+          notEmpty: false,
+        },
+      },
+      shortDescription: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
       },
       description: {
         type: DataTypes.STRING,
@@ -38,9 +45,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    { underscored: true,
-      paranoid: true 
-    },
+    { underscored: true, paranoid: true },
   );
 
   Game.associate = (db) => {
@@ -102,9 +107,9 @@ module.exports = (sequelize, DataTypes) => {
     Game.hasMany(db.Cart, {
       foreignKey: {
         name: "gameId",
-        allowNull: false
-      }
-    })
+        allowNull: false,
+      },
+    });
   };
   return Game;
 };
