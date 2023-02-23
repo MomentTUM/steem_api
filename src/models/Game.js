@@ -58,34 +58,6 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: false,
         },
       },
-      pcMinRequirement: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          notEmpty: true,
-        },
-      },
-      pcRecRequirement: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          notEmpty: true,
-        },
-      },
-      macMinRequirement: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          notEmpty: true,
-        },
-      },
-      macRecRequirement: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          notEmpty: true,
-        },
-      },
     },
     { underscored: true, paranoid: true },
   );
@@ -165,6 +137,12 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
     Game.hasMany(db.Platform, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false,
+      },
+    });
+    Game.hasMany(db.Requirement, {
       foreignKey: {
         name: "gameId",
         allowNull: false,
