@@ -2,6 +2,13 @@ module.exports = (sequelize, DataTypes) => {
   const Game = sequelize.define(
     "Game",
     {
+      appId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
       vdo: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -13,8 +20,15 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
-          notEmpty: false
-        }
+          notEmpty: false,
+        },
+      },
+      shortDescription: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
       },
       description: {
         type: DataTypes.STRING,
@@ -23,14 +37,49 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: false,
         },
       },
-      price: {
+      headerImage: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           notEmpty: false,
         },
       },
-      url: {
+      developers: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      publishers: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      pcMinRequirement: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      pcRecRequirement: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      macMinRequirement: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      macRecRequirement: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
@@ -38,9 +87,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
     },
-    { underscored: true,
-      paranoid: true 
-    },
+    { underscored: true, paranoid: true },
   );
 
   Game.associate = (db) => {
@@ -102,9 +149,27 @@ module.exports = (sequelize, DataTypes) => {
     Game.hasMany(db.Cart, {
       foreignKey: {
         name: "gameId",
-        allowNull: false
-      }
-    })
+        allowNull: false,
+      },
+    });
+    Game.hasMany(db.Category, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false,
+      },
+    });
+    Game.hasMany(db.Price, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false,
+      },
+    });
+    Game.hasMany(db.Platform, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false,
+      },
+    });
   };
   return Game;
 };
