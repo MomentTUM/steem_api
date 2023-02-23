@@ -1,5 +1,7 @@
 const axios = require("axios");
 const createError = require("../util/createError");
+const { Requirement } = require("../models/");
+const { Game } = require("../models");
 
 exports.getGameInfo = async (req, res, next) => {
   const { appId } = req.params;
@@ -20,7 +22,7 @@ exports.getGameInfo = async (req, res, next) => {
 };
 
 exports.getGamesInfo = async (req, res, next) => {
-  const appIds = [730, 570, 582010, 990080, 1196590, 814380];
+  const appIds = [730, 570, 582010, 990080, 1196590, 1693980, 814380];
 
   const getGameInfo = async (appId) => {
     try {
@@ -44,6 +46,17 @@ exports.getGamesInfo = async (req, res, next) => {
     // console.log(gamesInfo);
     const gamesInfoArray = await Promise.all(gamesInfo);
     // console.log(gamesInfoArray);
+
+    await Game.create({
+      name: "dead space",
+      vdo: "1234",
+      shortDescription: "dead space",
+      description: "dead",
+      developers: "steam",
+      publishers: "valve",
+      headerImage: gamesInfoArray[5].header_image,
+      appId: gamesInfoArray[5].steam_appid,
+    });
     res.json(gamesInfoArray);
   } catch (err) {
     console.error(err);
