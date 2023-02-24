@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
-  const Platform = sequelize.define(
-    "Platform",
+  const Genres = sequelize.define(
+    "Genres",
     {
       name: {
         type: DataTypes.STRING,
@@ -16,22 +16,23 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  Platform.associate = (db) => {
-    Platform.belongsTo(db.Game, {
+  Genres.associate = (db) => {
+    Genres.hasMany(db.Type, {
       foreignKey: {
-        name: "gameId",
+        name: "genresId",
         allowNull: false,
       },
     });
   };
 
-  // Platform.associate = (db) => {
-  //   Platform.belongsTo(db.Game, {
+  // Genres.associate = (db) => {
+  //   Genres.hasMany(db.Type, {
   //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
+  //       name: "genresId",
+  //       allowNUll: false,
   //     },
   //   });
   // };
-  return Platform;
+
+  return Genres;
 };

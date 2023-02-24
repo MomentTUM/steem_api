@@ -16,6 +16,7 @@ const chatRoute = require("./routes/chat-route");
 const cartRoute = require("./routes/cart-route");
 const userRoute = require("./routes/user-route");
 const gameRoute = require("./routes/game-route");
+const adminRoute = require("./routes/admin-route");
 // const { sequelize } = require("./models")
 
 // sequelize.sync({ force: true })
@@ -31,6 +32,7 @@ app.use("/steam", authenticateMiddleware, steamRoute);
 app.use("/chat", authenticateMiddleware, chatRoute);
 app.use("/cart", authenticateMiddleware, cartRoute);
 app.use("/user", authenticateMiddleware, userRoute);
+app.use("/admin", adminRoute);
 app.use("/game", gameRoute);
 
 app.use(notFoundMiddleware);

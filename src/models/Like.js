@@ -10,26 +10,41 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       underscored: true,
-      paranoid: true
+      paranoid: true,
     },
   );
 
   Like.associate = (db) => {
-    Like.belongsTo(db.User, {
+    Like.belongsTo(db.Profile, {
       foreignKey: {
-        name: "userId",
+        name: "profileId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
-
     Like.belongsTo(db.Game, {
       foreignKey: {
         name: "gameId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
   };
+
+  // Like.associate = (db) => {
+  //   Like.belongsTo(db.User, {
+  //     foreignKey: {
+  //       name: "userId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+
+  //   Like.belongsTo(db.Game, {
+  //     foreignKey: {
+  //       name: "gameId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+  // };
   return Like;
 };

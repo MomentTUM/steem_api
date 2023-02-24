@@ -6,24 +6,24 @@ const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const { User } = require("../models");
+const { User, Profile } = require("../models");
 const createError = require("../util/createError");
 
 exports.checkEmail = async (req, res, next) => {
   try {
-    const email = await User.findOne( {
+    const email = await User.findOne({
       where: {
-        email: req.body.email
-      }
-    })
+        email: req.body.email,
+      },
+    });
     if (email) {
-     return res.status(400).json({message: "Email is already used"})
+      return res.status(400).json({ message: "Email is already used" });
     }
-    res.status(200).json(0)
-  } catch(err) {
-    next(err)
+    res.status(200).json(0);
+  } catch (err) {
+    next(err);
   }
-}
+};
 
 exports.register = async (req, res, next) => {
   try {
@@ -43,7 +43,11 @@ exports.register = async (req, res, next) => {
       createError("Email or username is already used", 400);
     }
     value.password = await bcrypt.hash(value.password, 12);
-    await User.create(value);
+    const newUser = await User.create(value); // { id: 10, username: , password:  }
+    await Profile.create({
+      name: newUser.userName,
+      userId: newUser.id,
+    });
     res.status(201).json({ message: "Register success" });
   } catch (err) {
     next(err);

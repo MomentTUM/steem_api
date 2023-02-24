@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Category = sequelize.define(
     "Category",
     {
-      categoryName: {
+      name: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -17,13 +17,22 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Category.associate = (db) => {
-    Category.belongsTo(db.Game, {
+    Category.hasMany(db.Type, {
       foreignKey: {
-        name: "gameId",
+        name: "categoryId",
         allowNull: false,
       },
     });
   };
+
+  // Category.associate = (db) => {
+  //   Category.hasMany(db.Type, {
+  //     foreignKey: {
+  //       name: "categoryId",
+  //       allowNull: false,
+  //     },
+  //   });
+  // };
 
   return Category;
 };

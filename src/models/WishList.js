@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     {},
     {
       underscored: true,
-      paranoid: true
+      paranoid: true,
     },
   );
 
@@ -14,16 +14,31 @@ module.exports = (sequelize, DataTypes) => {
         name: "profileId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
     WishList.belongsTo(db.Game, {
       foreignKey: {
         name: "gameId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
   };
+
+  // WishList.associate = (db) => {
+  //   WishList.belongsTo(db.Profile, {
+  //     foreignKey: {
+  //       name: "profileId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+  //   WishList.belongsTo(db.Game, {
+  //     foreignKey: {
+  //       name: "gameId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+  // };
 
   return WishList;
 };

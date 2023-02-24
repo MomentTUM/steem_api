@@ -1,19 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
-  const Sale = sequelize.define(
-    "Sale",
+  const Screenshot = sequelize.define(
+    "Screenshot",
     {
-      discount: {
+      image: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         validate: {
-          notEmpty: true,
-        },
-      },
-      calendar: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        validate: {
-          notEmpty: true,
+          notEmpty: false,
         },
       },
     },
@@ -23,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  Sale.associate = (db) => {
-    Sale.belongsTo(db.Game, {
+  Screenshot.associate = (db) => {
+    Screenshot.belongsTo(db.Game, {
       foreignKey: {
         name: "gameId",
         allowNull: false,
@@ -32,8 +25,8 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  // Sale.associate = (db) => {
-  //   Sale.belongsTo(db.Game, {
+  // Screenshot.associate = (db) => {
+  //   Screenshot.belongsTo(db.Game, {
   //     foreignKey: {
   //       name: "gameId",
   //       allowNull: false,
@@ -41,5 +34,6 @@ module.exports = (sequelize, DataTypes) => {
   //     onDelete: "RESTRICT",
   //   });
   // };
-  return Sale;
+
+  return Screenshot;
 };

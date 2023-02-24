@@ -1,5 +1,6 @@
 const axios = require("axios");
 const createError = require("../util/createError");
+const { Game } = require("../models");
 
 exports.getGameInfo = async (req, res, next) => {
   const { appId } = req.params;
@@ -27,12 +28,22 @@ exports.getGamesInfo = async (req, res, next) => {
       const response = await axios.get(
         `https://store.steampowered.com/api/appdetails?appids=${appId}`,
       );
+      // console.log(response);
       const gameDetails = response.data[appId].data;
-      const gameInfo = {
-        name: gameDetails.name,
+      const result = {
+        steamAppId: gameDetails?.steam_appid,
+        name: gameDetails?.name,
+        aboutTheGame: gameDetails?.about_the_game,
+        shortDescription: gameDetails?.short_description,
+        detailedDescription: gameDetails?.detailed_description,
+        headerImage: gameDetails?.header_image,
       };
-      //   return gameInfo;
-      return gameDetails;
+      // console.log(gameDetails);
+      // const gameInfo = {
+      //   name: gameDetails.name,
+      // };
+      console.log(result);
+      return result;
     } catch (err) {
       console.error(err);
       createError("Error retrieving game information", 500);
@@ -41,10 +52,13 @@ exports.getGamesInfo = async (req, res, next) => {
 
   try {
     const gamesInfo = appIds.map((appId) => getGameInfo(appId));
-    // console.log(gamesInfo);
     const gamesInfoArray = await Promise.all(gamesInfo);
     // console.log(gamesInfoArray);
-    res.json(gamesInfoArray);
+    // console.log(gamesInfoArray[0].name);
+
+    await Game.bulkCreate(gamesInfoArray);
+
+    res.status(200).json({ gamesInfoArray });
   } catch (err) {
     console.error(err);
     createError("Error retrieving game information", 500);

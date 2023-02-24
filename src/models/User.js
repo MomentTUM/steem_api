@@ -32,59 +32,42 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: "user",
       },
     },
-    { underscored: true,
-      paranoid: true },
+    { underscored: true, paranoid: true },
   );
 
   User.associate = (db) => {
-    User.hasMany(db.Like, {
+    User.hasMany(db.Profile, {
       foreignKey: {
         name: "userId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
     User.hasMany(db.Transaction, {
       foreignKey: {
         name: "userId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
-    User.hasMany(db.Review, {
-      foreignKey: {
-        name: "userId",
-        allowNull: false,
-      },
-      onDelete: "RESTRICT",
-    });
-
     User.hasMany(db.Friend, {
       as: "Requester",
       foreignKey: {
         name: "requesterId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
-
     User.hasMany(db.Friend, {
       as: "Accepter",
       foreignKey: {
         name: "accepterId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
-
-    //chat//
     User.hasMany(db.Chat, {
       as: "Sender",
       foreignKey: {
         name: "senderId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
     User.hasMany(db.Chat, {
       as: "Receiver",
@@ -92,17 +75,76 @@ module.exports = (sequelize, DataTypes) => {
         name: "receiverId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
-    //chat//
-
-    User.hasMany(db.Profile, {
-      foreignKey: {
-        name: "userId",
-        allowNull: false
-      },
-      onDelete: "RESTRICT"
-    })
   };
+
+  // User.associate = (db) => {
+  //   User.hasMany(db.Like, {
+  //     foreignKey: {
+  //       name: "userId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+  //   User.hasMany(db.Transaction, {
+  //     foreignKey: {
+  //       name: "userId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+  //   User.hasMany(db.Review, {
+  //     foreignKey: {
+  //       name: "userId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+
+  //   User.hasMany(db.Friend, {
+  //     as: "Requester",
+  //     foreignKey: {
+  //       name: "requesterId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+
+  //   User.hasMany(db.Friend, {
+  //     as: "Accepter",
+  //     foreignKey: {
+  //       name: "accepterId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+
+  //   //chat//
+  //   User.hasMany(db.Chat, {
+  //     as: "Sender",
+  //     foreignKey: {
+  //       name: "senderId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+  //   User.hasMany(db.Chat, {
+  //     as: "Receiver",
+  //     foreignKey: {
+  //       name: "receiverId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+  //   //chat//
+
+  //   User.hasMany(db.Profile, {
+  //     foreignKey: {
+  //       name: "userId",
+  //       allowNull: false
+  //     },
+  //     onDelete: "RESTRICT"
+  //   })
+  // };
   return User;
 };

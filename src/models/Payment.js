@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     {},
     {
       underscored: true,
-      paranoid: true
+      paranoid: true,
     },
   );
 
@@ -14,8 +14,17 @@ module.exports = (sequelize, DataTypes) => {
         name: "paymentId",
         allowNull: false,
       },
-      onDelete: "RESTRICT",
     });
   };
+
+  // Payment.associate = (db) => {
+  //   Payment.hasMany(db.Transaction, {
+  //     foreignKey: {
+  //       name: "paymentId",
+  //       allowNull: false,
+  //     },
+  //     onDelete: "RESTRICT",
+  //   });
+  // };
   return Payment;
 };

@@ -81,5 +81,14 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
+  // Requirement.associate = (db) => {
+  //   Requirement.belongsTo(db.Game, {
+  //     foreignKey: {
+  //       name: "gameId",
+  //       allowNull: false,
+  //     },
+  //   });
+  // };
+
   return Requirement;
 };

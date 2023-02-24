@@ -1,30 +1,27 @@
 module.exports = (sequelize, DataTypes) => {
-  const Sale = sequelize.define(
-    "Sale",
+  const Movie = sequelize.define(
+    "Movie",
     {
-      discount: {
+      name: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         validate: {
-          notEmpty: true,
+          notEmpty: false,
         },
       },
-      calendar: {
+      thumbnail: {
         type: DataTypes.STRING,
-        allowNull: true,
+        allowNull: false,
         validate: {
-          notEmpty: true,
+          notEmpty: false,
         },
       },
     },
-    {
-      underscored: true,
-      paranoid: true,
-    },
+    { underscored: true, paranoid: true },
   );
 
-  Sale.associate = (db) => {
-    Sale.belongsTo(db.Game, {
+  Movie.associate = (db) => {
+    Movie.belongsTo(db.Game, {
       foreignKey: {
         name: "gameId",
         allowNull: false,
@@ -32,14 +29,14 @@ module.exports = (sequelize, DataTypes) => {
     });
   };
 
-  // Sale.associate = (db) => {
-  //   Sale.belongsTo(db.Game, {
+  // Movie.associate = (db) => {
+  //   Movie.belongsTo(db.Game, {
   //     foreignKey: {
   //       name: "gameId",
   //       allowNull: false,
   //     },
-  //     onDelete: "RESTRICT",
   //   });
   // };
-  return Sale;
+
+  return Movie;
 };

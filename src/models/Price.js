@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     },
   );
+
   Price.associate = (db) => {
     Price.belongsTo(db.Game, {
       foreignKey: {
@@ -44,5 +45,14 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
   };
+
+  // Price.associate = (db) => {
+  //   Price.belongsTo(db.Game, {
+  //     foreignKey: {
+  //       name: "gameId",
+  //       allowNull: false,
+  //     },
+  //   });
+  // };
   return Price;
 };
