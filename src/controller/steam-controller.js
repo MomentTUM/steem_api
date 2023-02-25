@@ -23,7 +23,6 @@ exports.getGameInfo = async (req, res, next) => {
 
 exports.getGamesInfo = async (req, res, next) => {
   const appIds = [730, 570, 582010, 990080, 1196590, 1693980, 814380];
-
   const getGameInfo = async (appId) => {
     try {
       const response = await axios.get(
@@ -47,7 +46,7 @@ exports.getGamesInfo = async (req, res, next) => {
     const gamesInfoArray = await Promise.all(gamesInfo);
     // console.log(gamesInfoArray);
 
-    await Game.create({
+    const game = await Game.create({
       name: "dead space",
       vdo: "1234",
       shortDescription: "dead space",
@@ -57,6 +56,7 @@ exports.getGamesInfo = async (req, res, next) => {
       headerImage: gamesInfoArray[5].header_image,
       appId: gamesInfoArray[5].steam_appid,
     });
+    // res.json(game);
     res.json(gamesInfoArray);
   } catch (err) {
     console.error(err);
