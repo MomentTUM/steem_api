@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const Game = sequelize.define(
     "Game",
     {
-      steamAppId: {
+      steamAppid: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true,
         validate: {
           notEmpty: false,
         },
