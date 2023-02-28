@@ -36,7 +36,7 @@ exports.getGamesInfo = async (req, res, next) => {
       // console.log(response);
       const gameDetails = response.data[appId].data;
       const result = {
-        steamAppid: gameDetails?.steam_appid,
+        gameId: gameDetails?.steam_appid,
         name: gameDetails?.name,
         aboutTheGame: gameDetails?.about_the_game,
         shortDescription: gameDetails?.short_description,

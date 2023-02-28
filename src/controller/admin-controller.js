@@ -21,15 +21,32 @@ exports.getGameToData = async (req, res, next) => {
       detailedDescription: gameDetails?.detailed_description,
       headerImage: gameDetails?.header_image,
     };
-    // await Game.create(result);
+    await Game.create(result);
+    const game = await Game.findOne({
+      where: {
+        steam_appid: appId,
+      },
+    });
+    // console.log(game.id);
     const resScreen = gameDetails?.screenshots;
     const filterScreenshots = resScreen.map((el) => ({
       pathThumbnail: el.path_thumbnail,
-      steamAppid: appId,
+      gameId: game.id,
     }));
-    // await Screenshot.create(filterScreenshots);
-    const resMovie = gameDetails?.Movie;
-    console.log(resMovie);
+    await Screenshot.bulkCreate(filterScreenshots);
+    // pathThumbnail: "hello",
+    //   pathThumbnail: gameDetails?.screenshots[0].path_thumbnail,
+    //   gameId: 1,
+    // });
+    const resMovie = gameDetails?.movies;
+    const filterScreenMovie = resMovie.map((el) => ({
+      name: el.name,
+      thumbnail: el.thumbnail,
+      mp4: el.mp4["480"],
+      gameId: game.id,
+    }));
+    await Movie.bulkCreate(filterScreenMovie);
+    // console.log(resMovie);
     res.status(200).json();
     // console.log(resScreen);
   } catch (err) {
