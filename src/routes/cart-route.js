@@ -1,8 +1,10 @@
-const express = require("express")
-const router = express.Router()
-const cartController = require("../controller/cart-controller")
+const express = require("express");
+const router = express.Router();
+const cartController = require("../controller/cart-controller");
 
-router.post("/:profileId/:gameId", cartController.addToCart)
-router.delete("")
+router.get("/", cartController.getCart);
+router.post("/:steamAppId", cartController.setCart);
+router.delete("/:steamAppId", cartController.deleteCart);
 
-module.exports = router
+router.post("/:profileId/:gameId", cartController.addToCart);
+module.exports = router;
