@@ -16,6 +16,13 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: false,
         },
       },
+      mp4: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
     },
     { underscored: true, paranoid: true },
   );

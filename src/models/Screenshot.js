@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   const Screenshot = sequelize.define(
     "Screenshot",
     {
-      image: {
+      pathThumbnail: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {

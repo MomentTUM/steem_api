@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Like.associate = (db) => {
-    Like.belongsTo(db.Profile, {
+    Like.belongsTo(db.User, {
       foreignKey: {
-        name: "profileId",
+        name: "userId",
         allowNull: false,
       },
     });

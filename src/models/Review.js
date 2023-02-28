@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-    Review.belongsTo(db.Profile, {
+    Review.belongsTo(db.User, {
       foreignKey: {
-        name: "profileId",
+        name: "userId",
         allowNull: false,
       },
     });

@@ -15,9 +15,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-    Library.belongsTo(db.Profile, {
+    Library.belongsTo(db.User, {
       foreignKey: {
-        name: "profileId",
+        name: "userId",
         allowNull: false,
       },
     });
