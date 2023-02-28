@@ -1,17 +1,23 @@
 const axios = require("axios");
 const createError = require("../util/createError");
+<<<<<<< HEAD
+=======
+const { Requirement } = require("../models/");
+>>>>>>> dev
 const { Game } = require("../models");
 
 exports.getGameInfo = async (req, res, next) => {
   const { appId } = req.params;
-
+  // const {currency, language} = req.query
+  const currency = "THB";
+  const language = "english";
+  const apiKey = process.env.STEAM_API_KEY;
   try {
     // Use Axios to make GET request to Steam API to retrieve game details
     const gameDetailsResponse = await axios.get(
-      `https://store.steampowered.com/api/appdetails?appids=${appId}`,
+      `https://store.steampowered.com/api/appdetails?appids=${appId}&key=${apiKey}&cc=${currency}&l=${language}`,
     );
     const gameDetails = gameDetailsResponse.data[appId].data;
-
     res.json(gameDetails);
   } catch (err) {
     // console.error(err);
@@ -21,12 +27,15 @@ exports.getGameInfo = async (req, res, next) => {
 };
 
 exports.getGamesInfo = async (req, res, next) => {
-  const appIds = [730, 570, 582010, 990080, 1196590, 814380];
-
+  const appIds = [730, 570, 582010, 990080, 1196590, 1693980, 814380];
+  // const {currency, language} = req.query
+  const currency = "THB";
+  const language = "english";
+  const apiKey = process.env.STEAM_API_KEY;
   const getGameInfo = async (appId) => {
     try {
       const response = await axios.get(
-        `https://store.steampowered.com/api/appdetails?appids=${appId}`,
+        `https://store.steampowered.com/api/appdetails?appids=${appId}&key=${apiKey}&cc=${currency}&l=${language}`,
       );
       // console.log(response);
       const gameDetails = response.data[appId].data;
@@ -54,11 +63,28 @@ exports.getGamesInfo = async (req, res, next) => {
     const gamesInfo = appIds.map((appId) => getGameInfo(appId));
     const gamesInfoArray = await Promise.all(gamesInfo);
     // console.log(gamesInfoArray);
+<<<<<<< HEAD
     // console.log(gamesInfoArray[0].name);
 
     await Game.bulkCreate(gamesInfoArray);
 
     res.status(200).json({ gamesInfoArray });
+=======
+
+    // const game = await Game.create({
+    //   name: "dead space",
+    //   vdo: "1234",
+    //   shortDescription: "dead space",
+    //   description: "dead",
+    //   developers: "steam",
+    //   publishers: "valve",
+    //   headerImage: gamesInfoArray[5].header_image,
+    //   appId: gamesInfoArray[5].steam_appid,
+    // });
+
+    // res.json(game);
+    res.json(gamesInfoArray);
+>>>>>>> dev
   } catch (err) {
     console.error(err);
     createError("Error retrieving game information", 500);
