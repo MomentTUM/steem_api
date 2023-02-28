@@ -35,20 +35,20 @@ exports.getGamesInfo = async (req, res, next) => {
       );
       // console.log(response);
       const gameDetails = response.data[appId].data;
-      const result = {
-        steamAppId: gameDetails?.steam_appid,
-        name: gameDetails?.name,
-        aboutTheGame: gameDetails?.about_the_game,
-        shortDescription: gameDetails?.short_description,
-        detailedDescription: gameDetails?.detailed_description,
-        headerImage: gameDetails?.header_image,
-      };
+      // const result = {
+      //   gameId: gameDetails?.steam_appid,
+      //   name: gameDetails?.name,
+      //   aboutTheGame: gameDetails?.about_the_game,
+      //   shortDescription: gameDetails?.short_description,
+      //   detailedDescription: gameDetails?.detailed_description,
+      //   headerImage: gameDetails?.header_image,
+      // };
       // console.log(gameDetails);
       // const gameInfo = {
       //   name: gameDetails.name,
       // };
-      console.log(result);
-      return result;
+      // console.log(result);
+      return gameDetails;
     } catch (err) {
       console.error(err);
       createError("Error retrieving game information", 500);
@@ -61,9 +61,9 @@ exports.getGamesInfo = async (req, res, next) => {
     // console.log(gamesInfoArray);
     // console.log(gamesInfoArray[0].name);
 
-    await Game.bulkCreate(gamesInfoArray);
+    // await Game.bulkCreate(gamesInfoArray);
 
-    res.status(200).json({ gamesInfoArray });
+    res.status(200).json(gamesInfoArray);
   } catch (err) {
     console.error(err);
     createError("Error retrieving game information", 500);
