@@ -6,7 +6,7 @@ const { Op } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
-const { User, Profile } = require("../models");
+const { User } = require("../models");
 const createError = require("../util/createError");
 
 exports.checkEmail = async (req, res, next) => {
@@ -43,11 +43,7 @@ exports.register = async (req, res, next) => {
       createError("Email or username is already used", 400);
     }
     value.password = await bcrypt.hash(value.password, 12);
-    const newUser = await User.create(value); // { id: 10, username: , password:  }
-    await Profile.create({
-      name: newUser.userName,
-      userId: newUser.id,
-    });
+
     res.status(201).json({ message: "Register success" });
   } catch (err) {
     next(err);

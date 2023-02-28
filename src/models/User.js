@@ -26,6 +26,27 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: false,
         },
       },
+      name: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      image: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      coverImage: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
       role: {
         type: DataTypes.ENUM("user", "admin"),
         allowNull: false,
@@ -36,12 +57,6 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   User.associate = (db) => {
-    User.hasMany(db.Profile, {
-      foreignKey: {
-        name: "userId",
-        allowNull: false,
-      },
-    });
     User.hasMany(db.Transaction, {
       foreignKey: {
         name: "userId",
@@ -73,6 +88,36 @@ module.exports = (sequelize, DataTypes) => {
       as: "Receiver",
       foreignKey: {
         name: "receiverId",
+        allowNull: false,
+      },
+    });
+    User.hasMany(db.WishList, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false,
+      },
+    });
+    User.hasMany(db.Library, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false,
+      },
+    });
+    User.hasMany(db.Review, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false,
+      },
+    });
+    User.hasMany(db.Cart, {
+      foreignKey: {
+        name: "userId",
+        allowNull: false,
+      },
+    });
+    User.hasMany(db.Like, {
+      foreignKey: {
+        name: "userId",
         allowNull: false,
       },
     });

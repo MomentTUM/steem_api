@@ -2,9 +2,10 @@ module.exports = (sequelize, DataTypes) => {
   const Game = sequelize.define(
     "Game",
     {
-      steamAppId: {
+      steamAppid: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        unique: true,
         validate: {
           notEmpty: false,
         },
@@ -38,6 +39,27 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       headerImage: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      isFree: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      recommendations: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      priceOverview: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
@@ -109,12 +131,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-    Game.hasMany(db.Requirement, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: false,
-      },
-    });
     Game.hasMany(db.Type, {
       foreignKey: {
         name: "gameId",
@@ -134,6 +150,24 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
     Game.hasMany(db.Publisher, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false,
+      },
+    });
+    Game.hasMany(db.MacRequirement, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false,
+      },
+    });
+    Game.hasMany(db.PcRequirement, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false,
+      },
+    });
+    Game.hasMany(db.LinuxRequirement, {
       foreignKey: {
         name: "gameId",
         allowNull: false,

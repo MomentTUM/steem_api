@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Cart.associate = (db) => {
-    Cart.belongsTo(db.Profile, {
+    Cart.belongsTo(db.User, {
       foreignKey: {
-        name: "profileId",
+        name: "userId",
         allowNull: false,
       },
     });
