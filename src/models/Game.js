@@ -45,6 +45,20 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: false,
         },
       },
+      isFree: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      recommendations: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
     },
     { underscored: true, paranoid: true },
   );
@@ -110,12 +124,6 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-    Game.hasMany(db.Requirement, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: false,
-      },
-    });
     Game.hasMany(db.Type, {
       foreignKey: {
         name: "gameId",
@@ -135,6 +143,24 @@ module.exports = (sequelize, DataTypes) => {
       },
     });
     Game.hasMany(db.Publisher, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false,
+      },
+    });
+    Game.hasMany(db.MacRequirement, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false,
+      },
+    });
+    Game.hasMany(db.PcRequirement, {
+      foreignKey: {
+        name: "gameId",
+        allowNull: false,
+      },
+    });
+    Game.hasMany(db.LinuxRequirement, {
       foreignKey: {
         name: "gameId",
         allowNull: false,
