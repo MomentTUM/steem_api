@@ -59,6 +59,13 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: false,
         },
       },
+      priceOverview: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
     },
     { underscored: true, paranoid: true },
   );
