@@ -26,7 +26,6 @@ exports.getGameToData = async (req, res, next) => {
         steam_appid: appId,
       },
     });
-    // console.log(game.id);
     const resScreen = gameDetails?.screenshots;
     const filterScreenshots = resScreen.map((el) => ({
       pathThumbnail: el.path_thumbnail,
@@ -41,9 +40,7 @@ exports.getGameToData = async (req, res, next) => {
       gameId: game.id,
     }));
     await Movie.bulkCreate(filterScreenMovie);
-    // console.log(resMovie);
     res.status(200).json();
-    // console.log(resScreen);
   } catch (err) {
     console.log(err);
     createError("Error get game info", 400);
@@ -70,14 +67,14 @@ exports.getGamesToData = async (req, res, next) => {
         detailedDescription: gameDetails?.detailed_description,
         headerImage: gameDetails?.header_image,
       };
-      console.log(0);
+
       await Game.create(result);
       const game = await Game.findOne({
         where: {
           steam_appid: appId,
         },
       });
-      // console.log(game.id);
+
       const resScreen = gameDetails?.screenshots;
       const filterScreenshots = resScreen.map((el) => ({
         pathThumbnail: el.path_thumbnail,
@@ -92,10 +89,9 @@ exports.getGamesToData = async (req, res, next) => {
         mp4: el.mp4["480"],
         gameId: game.id,
       }));
-      console.log(2);
+
       await Movie.bulkCreate(filterScreenMovie);
-      // console.log(resMovie);
-      // console.log(resScreen);
+      return { message: `steam_appid:${appId} has been added` };
     } catch (err) {
       console.log(err);
       createError("Error get game info", 400);
@@ -104,6 +100,9 @@ exports.getGamesToData = async (req, res, next) => {
   };
   try {
     const gamesInfo = appIds.map((appId) => getGameInfo(appId));
-    res.status(200).json({ gamesInfo });
-  } catch (err) {}
+    const gamesInfoArray = await Promise.all(gamesInfo);
+    res.status(200).json(gamesInfoArray);
+  } catch (err) {
+    next(err);
+  }
 };

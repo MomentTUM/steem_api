@@ -48,20 +48,21 @@ module.exports = (sequelize, DataTypes) => {
       isFree: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
         validate: {
           notEmpty: false,
         },
       },
       recommendations: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
           notEmpty: false,
         },
       },
       priceOverview: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
           notEmpty: false,
         },
