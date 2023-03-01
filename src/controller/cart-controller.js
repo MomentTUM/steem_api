@@ -1,4 +1,4 @@
-const { Cart, Transaction } = require("../models");
+const { Cart, Transaction, Game } = require("../models");
 const createError = require("../util/createError");
 
 exports.addToCart = async (req, res, next) => {
@@ -27,10 +27,14 @@ exports.addToCart = async (req, res, next) => {
 //since get params and request user from authMiddleware
 exports.setCart = async (req, res, next) => {
   try {
+    const game = await Game.findOne({
+      where: { steam_appid: req.params.steamAppId },
+    });
+
     const existCart = await Cart.findOne({
       where: {
         userId: req.user.id,
-        steamAppid: req.params.steamAppId,
+        gameId: game.id,
       },
     });
     if (existCart) {
@@ -38,7 +42,7 @@ exports.setCart = async (req, res, next) => {
     }
     const newCart = await Cart.create({
       userId: req.user.id,
-      steamAppid: req.params.steamAppId,
+      gameId: game.id,
     });
     res.status(200).json(newCart);
   } catch (err) {
@@ -50,11 +54,13 @@ exports.setCart = async (req, res, next) => {
 //from cart table
 exports.getCart = async (req, res, next) => {
   try {
-    const cart = await Cart.findAll({
-      where: { userId: req.use.id },
-      include: { model: Game, include: { model: GameImage } },
-    });
-    res.status(200).json(cart);
+    console.log(req.user.id);
+    const cart = await Cart.findAll();
+    const cartByUserId = cart.filter(
+      (el) => el.dataValues.userId === req.user.id,
+    );
+    console.log(cartByUserId);
+    res.status(200).json(cartByUserId);
   } catch (err) {
     next(err);
   }
