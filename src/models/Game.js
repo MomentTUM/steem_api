@@ -119,12 +119,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-    Game.hasMany(db.Price, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: false,
-      },
-    });
+    // Game.hasMany(db.Price, {
+    //   foreignKey: {
+    //     name: "gameId",
+    //     allowNull: false,
+    //   },
+    // });
     Game.hasMany(db.Platform, {
       foreignKey: {
         name: "gameId",

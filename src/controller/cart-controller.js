@@ -23,9 +23,8 @@ exports.addToCart = async (req, res, next) => {
   }
 };
 
-//need to change field in table (profileId to userId) (gameId to steamAppid)
-//and front-end don't need to send body from post method
-//since use params and request user from authMiddleware
+//front-end don't need to send body from post method
+//since get params and request user from authMiddleware
 exports.setCart = async (req, res, next) => {
   try {
     const existCart = await Cart.findOne({
