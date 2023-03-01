@@ -3,13 +3,20 @@ module.exports = (sequelize, DataTypes) => {
     "MacRequirement",
     {
       minimum: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: true,
         validate: {
           notEmpty: true,
         },
       },
-      recommendations: {
+      recommended: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      steamAppid: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
@@ -26,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
     MacRequirement.belongsTo(db.Game, {
       foreignKey: {
         name: "gameId",
-        allowNull: false,
+        allowNull: true,
       },
     });
   };

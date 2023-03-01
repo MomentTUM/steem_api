@@ -2,11 +2,32 @@ module.exports = (sequelize, DataTypes) => {
   const Platform = sequelize.define(
     "Platform",
     {
-      name: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      window: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
         validate: {
-          notEmpty: false,
+          notEmpty: true,
+        },
+      },
+      mac: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      linux: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
+      steamAppid: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
         },
       },
     },
@@ -20,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
     Platform.belongsTo(db.Game, {
       foreignKey: {
         name: "gameId",
-        allowNull: false,
+        allowNull: true,
       },
     });
   };
