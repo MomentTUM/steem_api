@@ -1,22 +1,23 @@
-const { WishList } = require("../models");
+const { WishList, Game } = require("../models");
 const createError = require("../util/createError");
 
 exports.addWishList = async (req, res, next) => {
   try {
-    const { gameId, profileId } = req.params;
-    // console.log(req.params)
+    const game = await Game.findOne({
+      where: { steam_appid: req.params.steamAppId },
+    });
     const wishList = await WishList.findOne({
       where: {
-        profileId: profileId,
-        gameId: gameId,
+        userId: req.user.id,
+        gameId: game.id,
       },
     });
     if (wishList) {
       createError("This user already have this game", 400);
     }
     const result = WishList.create({
-      profileId: profileId,
-      gameId: gameId,
+      userId: req.user.id,
+      gameId: game.id,
     });
     res.status(201).json({ result });
   } catch (err) {
@@ -26,7 +27,7 @@ exports.addWishList = async (req, res, next) => {
 
 exports.deleteWishList = async (req, res, next) => {
   try {
-    const { wishlistId, profileId } = req.params;
+    const { wishlistId } = req.params;
     const wishList = await WishList.findOne({
       where: {
         id: wishlistId,
@@ -35,11 +36,28 @@ exports.deleteWishList = async (req, res, next) => {
     if (!wishList.dataValues.id) {
       createError("You not have this wish list", 400);
     }
-    if (wishList.dataValues.profileId !== +profileId) {
+    if (wishList.dataValues.userId !== req.user.id) {
       createError("You not have permission to delete wish list", 400);
     }
     await WishList.destroy({ where: { id: wishList.dataValues.id } });
     res.status(204).json({ wishList });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getWishlist = async (req, res, next) => {
+  try {
+    const wishlist = await WishList.findAll({
+      include: {
+        model: Game,
+      },
+    });
+    const wishlistByUserId = wishlist.filter(
+      (el) => el.dataValues.userId === req.user.id,
+    );
+
+    res.status(200).json(wishlistByUserId);
   } catch (err) {
     next(err);
   }
