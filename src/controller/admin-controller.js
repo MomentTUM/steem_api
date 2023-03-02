@@ -144,7 +144,11 @@ exports.getGameToData = async (req, res, next) => {
 };
 
 exports.getGamesToData = async (req, res, next) => {
-  const appIds = [730, 570, 582010, 990080, 1196590, 1693980, 814380];
+  const appIds = [
+    730, 570, 582010, 990080, 1196590, 1693980, 814380, 1293160, 49520, 620,
+    400, 360430, 1296610, 1286680, 887570, 1919590, 1255630, 594650, 704270,
+    815370, 928960, 601050, 1713810, 1337010, 979690, 1389360,
+  ];
   const currency = "THB";
   const language = "english";
   const apiKey = process.env.STEAM_API_KEY;
@@ -179,14 +183,16 @@ exports.getGamesToData = async (req, res, next) => {
       }));
       await Screenshot.bulkCreate(filterScreenshots);
       const resMovie = gameDetails?.movies;
-      const filterScreenMovie = resMovie.map((el) => ({
-        name: el.name,
-        thumbnail: el.thumbnail,
-        mp4: el.mp4["480"],
-        gameId: game.id,
-        steamAppid: gameDetails?.steam_appid,
-      }));
-      await Movie.bulkCreate(filterScreenMovie);
+      if (resMovie) {
+        const filterScreenMovie = resMovie.map((el) => ({
+          name: el.name,
+          thumbnail: el.thumbnail,
+          mp4: el.mp4["480"],
+          gameId: game.id,
+          steamAppid: gameDetails?.steam_appid,
+        }));
+        await Movie.bulkCreate(filterScreenMovie);
+      }
       if (game.isFree === false) {
         const resPrice = gameDetails?.price_overview;
         await Price.create({
@@ -226,8 +232,8 @@ exports.getGamesToData = async (req, res, next) => {
           steamAppid: gameDetails?.steam_appid,
         });
       }
-      console.log(gameDetails?.pc_requirements.minimum);
-      console.log(!Array.isArray(gameDetails?.pc_requirements.length));
+      // console.log(gameDetails?.pc_requirements.minimum);
+      // console.log(!Array.isArray(gameDetails?.pc_requirements.length));
       if (
         !Array.isArray(gameDetails?.mac_requirements.length) &&
         gameDetails?.pc_requirements?.minimum
@@ -263,6 +269,7 @@ exports.getGamesToData = async (req, res, next) => {
         gameId: game.id,
         steamAppid: gameDetails?.steam_appid,
       }));
+      await Publisher.bulkCreate(filterPublisher);
       return { message: `steam_appid:${appId} has been added` };
     } catch (err) {
       console.log(err);
