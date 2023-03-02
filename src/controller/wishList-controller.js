@@ -19,7 +19,7 @@ exports.addWishList = async (req, res, next) => {
       userId: req.user.id,
       gameId: game.id,
     });
-    res.status(201).json({ result });
+    res.status(201).json(result);
   } catch (err) {
     next(err);
   }
@@ -58,6 +58,24 @@ exports.getWishlist = async (req, res, next) => {
     );
 
     res.status(200).json(wishlistByUserId);
+  } catch (err) {
+    next(err);
+  }
+};
+
+//To find wishlist by steamAppid
+exports.findWishlist = async (req, res, next) => {
+  try {
+    const game = await Game.findOne({
+      where: { steamAppid: req.query.steamAppid },
+    });
+    const wishlist = await WishList.findOne({
+      where: { gameId: game?.id },
+      include: {
+        model: Game,
+      },
+    });
+    res.status(200).json(wishlist);
   } catch (err) {
     next(err);
   }

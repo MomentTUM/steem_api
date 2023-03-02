@@ -6,4 +6,6 @@ router.post("/:steamAppId", wishListController.addWishList);
 router.delete("/:wishlistId", wishListController.deleteWishList);
 router.get("/", wishListController.getWishlist);
 
+router.get("/find", wishListController.findWishlist);
+
 module.exports = router;

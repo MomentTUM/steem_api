@@ -55,7 +55,9 @@ exports.setCart = async (req, res, next) => {
 exports.getCart = async (req, res, next) => {
   try {
     console.log(req.user.id);
-    const cart = await Cart.findAll();
+    const cart = await Cart.findAll({
+      include: { model: Game },
+    });
     const cartByUserId = cart.filter(
       (el) => el.dataValues.userId === req.user.id,
     );
