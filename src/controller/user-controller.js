@@ -27,37 +27,15 @@ exports.getUserById = async (req, res, next) => {
   }
 };
 
-exports.createProfile = async (req, res, next) => {
+exports.updateProfileUser = async (req, res, next) => {
   try {
     const value = validateCreateProfile({
       name: req.body.name,
       image: req.files?.image[0].path,
       coverImage: req.files?.coverImage[0].path,
     });
-
-    value.userId = req.user.id;
-
-    const user = await User.create({
-      name: value.name,
-      image: value.image,
-      coverImage: value.coverImage,
-      userId: value.userId,
-    });
-    res.status(201).json({ User });
-  } catch (err) {
-    next(err);
-  }
-};
-
-exports.updateProfile = async (req, res, next) => {
-  try {
-    const value = validateCreateProfile({
-      name: req.body.name,
-      image: req.files?.image[0].path,
-      coverImage: req.files?.coverImage[0].path,
-    });
-
-    const result = await User.update(
+    console.log(req.params);
+    const user = await User.update(
       {
         name: value.name,
         image: value.image,
@@ -65,11 +43,11 @@ exports.updateProfile = async (req, res, next) => {
       },
       {
         where: {
-          id: req.params.profileId,
+          id: req.params.userId,
         },
       },
     );
-    res.status(200).json({ result });
+    res.status(200).json({ user });
   } catch (err) {
     next(err);
   }

@@ -1,5 +1,17 @@
 const axios = require("axios");
-const { Game, Screenshot, Movie } = require("../models");
+const {
+  Game,
+  Screenshot,
+  Movie,
+  Price,
+  MacRequirement,
+  LinuxRequirement,
+  PcRequirement,
+  Developer,
+  Publisher,
+  Platform,
+} = require("../models");
+// const Price = require("../models/Price");
 const createError = require("../util/createError");
 
 exports.getGameToData = async (req, res, next) => {
@@ -12,6 +24,7 @@ exports.getGameToData = async (req, res, next) => {
       `https://store.steampowered.com/api/appdetails?appids=${appId}&key=${apiKey}&cc=${currency}&l=${language}`,
     );
     const gameDetails = gameDetailsResponse.data[appId].data;
+    // console.log(gameDetails.is_free);
     const result = {
       steamAppid: gameDetails?.steam_appid,
       name: gameDetails?.name,
@@ -19,6 +32,8 @@ exports.getGameToData = async (req, res, next) => {
       shortDescription: gameDetails?.short_description,
       detailedDescription: gameDetails?.detailed_description,
       headerImage: gameDetails?.header_image,
+      isFree: gameDetails?.is_free,
+      recommendations: gameDetails?.recommendations["total"],
     };
     await Game.create(result);
     const game = await Game.findOne({
@@ -30,6 +45,7 @@ exports.getGameToData = async (req, res, next) => {
     const filterScreenshots = resScreen.map((el) => ({
       pathThumbnail: el.path_thumbnail,
       gameId: game.id,
+      steamAppid: gameDetails?.steam_appid,
     }));
     await Screenshot.bulkCreate(filterScreenshots);
     const resMovie = gameDetails?.movies;
@@ -38,9 +54,88 @@ exports.getGameToData = async (req, res, next) => {
       thumbnail: el.thumbnail,
       mp4: el.mp4["480"],
       gameId: game.id,
+      steamAppid: gameDetails?.steam_appid,
     }));
     await Movie.bulkCreate(filterScreenMovie);
-    res.status(200).json();
+    if (game.isFree === false) {
+      const resPrice = gameDetails?.price_overview;
+      await Price.create({
+        currency: resPrice.currency,
+        initial: resPrice.initial,
+        final: resPrice.final,
+        discountPercent: resPrice.discount_percent,
+        initialFormatted: resPrice.initial_formatted,
+        finalFormatted: resPrice.final_formatted,
+        gameId: game.id,
+        steamAppid: gameDetails?.steam_appid,
+      });
+    }
+    // console.log(Array.isArray({}));
+    // console.log("a");
+    if (
+      !Array.isArray(gameDetails?.mac_requirements.length) &&
+      gameDetails?.mac_requirements?.minimum
+    ) {
+      const resMacReq = gameDetails?.mac_requirements;
+      await MacRequirement.create({
+        minimum: resMacReq.minimum,
+        recommended: resMacReq.recommended,
+        gameId: game.id,
+        steamAppid: gameDetails?.steam_appid,
+      });
+    }
+    if (
+      !Array.isArray(gameDetails?.mac_requirements.length) &&
+      gameDetails?.pc_requirements?.minimum
+    ) {
+      const resLinuxReq = gameDetails?.linux_requirements;
+      await LinuxRequirement.create({
+        minimum: resLinuxReq.minimum,
+        recommended: resLinuxReq.recommended,
+        gameId: game.id,
+        steamAppid: gameDetails?.steam_appid,
+      });
+    }
+    console.log(gameDetails?.pc_requirements.minimum);
+    console.log(!Array.isArray(gameDetails?.pc_requirements.length));
+    if (
+      !Array.isArray(gameDetails?.mac_requirements.length) &&
+      gameDetails?.pc_requirements?.minimum
+    ) {
+      const resPcReq = gameDetails?.pc_requirements;
+      await PcRequirement.create({
+        minimum: resPcReq.minimum,
+        recommended: resPcReq.recommended,
+        gameId: game.id,
+        steamAppid: gameDetails?.steam_appid,
+      });
+    }
+    const resPlatform = gameDetails?.platforms;
+    await Platform.create({
+      window: resPlatform.windows,
+      mac: resPlatform.mac,
+      linux: resPlatform.linux,
+      gameId: game.id,
+      steamAppid: gameDetails?.steam_appid,
+    });
+    const resDeveloper = gameDetails?.developers;
+    const filterDeveloper = resDeveloper.map((el) => ({
+      name: el,
+      gameId: game.id,
+      steamAppid: gameDetails?.steam_appid,
+    }));
+    // console.log(filterDeveloper);
+    await Developer.bulkCreate(filterDeveloper);
+    const resPublisher = gameDetails?.publishers;
+    // console.log(resPublisher);
+    const filterPublisher = resPublisher.map((el) => ({
+      name: el,
+      gameId: game.id,
+      steamAppid: gameDetails?.steam_appid,
+    }));
+    // console.log(filterPublisher);
+    await Publisher.bulkCreate(filterPublisher);
+    res.status(200).json({ message: `steam_appid:${appId} has been added` });
   } catch (err) {
     console.log(err);
     createError("Error get game info", 400);
@@ -49,7 +144,6 @@ exports.getGameToData = async (req, res, next) => {
 };
 
 exports.getGamesToData = async (req, res, next) => {
-  // const appIds = [730, 570, 582010, 990080, 1196590, 1693980, 814380];
   const appIds = [
     730, 570, 582010, 990080, 1196590, 1693980, 814380, 1293160, 49520, 620,
     400, 360430, 1296610, 1286680, 887570, 1919590, 1255630, 594650, 704270,
@@ -64,6 +158,7 @@ exports.getGamesToData = async (req, res, next) => {
         `https://store.steampowered.com/api/appdetails?appids=${appId}&key=${apiKey}&cc=${currency}&l=${language}`,
       );
       const gameDetails = gameDetailsResponse.data[appId].data;
+      // console.log(gameDetails.is_free);
       const result = {
         steamAppid: gameDetails?.steam_appid,
         name: gameDetails?.name,
@@ -71,31 +166,110 @@ exports.getGamesToData = async (req, res, next) => {
         shortDescription: gameDetails?.short_description,
         detailedDescription: gameDetails?.detailed_description,
         headerImage: gameDetails?.header_image,
+        isFree: gameDetails?.is_free,
+        recommendations: gameDetails?.recommendations["total"],
       };
-
       await Game.create(result);
       const game = await Game.findOne({
         where: {
           steam_appid: appId,
         },
       });
-
       const resScreen = gameDetails?.screenshots;
       const filterScreenshots = resScreen.map((el) => ({
         pathThumbnail: el.path_thumbnail,
         gameId: game.id,
+        steamAppid: gameDetails?.steam_appid,
       }));
-      console.log(resScreen);
       await Screenshot.bulkCreate(filterScreenshots);
       const resMovie = gameDetails?.movies;
-      const filterScreenMovie = resMovie.map((el) => ({
-        name: el.name,
-        thumbnail: el.thumbnail,
-        mp4: el.mp4["480"],
+      if (resMovie) {
+        const filterScreenMovie = resMovie.map((el) => ({
+          name: el.name,
+          thumbnail: el.thumbnail,
+          mp4: el.mp4["480"],
+          gameId: game.id,
+          steamAppid: gameDetails?.steam_appid,
+        }));
+        await Movie.bulkCreate(filterScreenMovie);
+      }
+      if (game.isFree === false) {
+        const resPrice = gameDetails?.price_overview;
+        await Price.create({
+          currency: resPrice.currency,
+          initial: resPrice.initial,
+          final: resPrice.final,
+          discountPercent: resPrice.discount_percent,
+          initialFormatted: resPrice.initial_formatted,
+          finalFormatted: resPrice.final_formatted,
+          gameId: game.id,
+          steamAppid: gameDetails?.steam_appid,
+        });
+      }
+      // console.log(Array.isArray({}));
+      // console.log("a");
+      if (
+        !Array.isArray(gameDetails?.mac_requirements.length) &&
+        gameDetails?.mac_requirements?.minimum
+      ) {
+        const resMacReq = gameDetails?.mac_requirements;
+        await MacRequirement.create({
+          minimum: resMacReq.minimum,
+          recommended: resMacReq.recommended,
+          gameId: game.id,
+          steamAppid: gameDetails?.steam_appid,
+        });
+      }
+      if (
+        !Array.isArray(gameDetails?.mac_requirements.length) &&
+        gameDetails?.pc_requirements?.minimum
+      ) {
+        const resLinuxReq = gameDetails?.linux_requirements;
+        await LinuxRequirement.create({
+          minimum: resLinuxReq.minimum,
+          recommended: resLinuxReq.recommended,
+          gameId: game.id,
+          steamAppid: gameDetails?.steam_appid,
+        });
+      }
+      // console.log(gameDetails?.pc_requirements.minimum);
+      // console.log(!Array.isArray(gameDetails?.pc_requirements.length));
+      if (
+        !Array.isArray(gameDetails?.mac_requirements.length) &&
+        gameDetails?.pc_requirements?.minimum
+      ) {
+        const resPcReq = gameDetails?.pc_requirements;
+        await PcRequirement.create({
+          minimum: resPcReq.minimum,
+          recommended: resPcReq.recommended,
+          gameId: game.id,
+          steamAppid: gameDetails?.steam_appid,
+        });
+      }
+      const resPlatform = gameDetails?.platforms;
+      await Platform.create({
+        window: resPlatform.windows,
+        mac: resPlatform.mac,
+        linux: resPlatform.linux,
         gameId: game.id,
+        steamAppid: gameDetails?.steam_appid,
+      });
+      const resDeveloper = gameDetails?.developers;
+      const filterDeveloper = resDeveloper.map((el) => ({
+        name: el,
+        gameId: game.id,
+        steamAppid: gameDetails?.steam_appid,
       }));
-
-      await Movie.bulkCreate(filterScreenMovie);
+      // console.log(filterDeveloper);
+      await Developer.bulkCreate(filterDeveloper);
+      const resPublisher = gameDetails?.publishers;
+      // console.log(resPublisher);
+      const filterPublisher = resPublisher.map((el) => ({
+        name: el,
+        gameId: game.id,
+        steamAppid: gameDetails?.steam_appid,
+      }));
+      await Publisher.bulkCreate(filterPublisher);
       return { message: `steam_appid:${appId} has been added` };
     } catch (err) {
       console.log(err);

@@ -20,10 +20,9 @@ io.use((socket, next) => {
 
 io.on("connection", (socket) => {
   console.log(onlineUser);
-  socket.on("send_message", () => {})
+  socket.on("send_message", () => {});
 });
 
 server.listen(process.env.PORT, () =>
-  console.log((`Server run on ${process.env.PORT}`))
+  console.log(`Server run on ${process.env.PORT}`),
 );
-

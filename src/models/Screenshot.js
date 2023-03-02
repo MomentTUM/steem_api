@@ -9,6 +9,13 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: false,
         },
       },
+      steamAppid: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+          notEmpty: true,
+        },
+      },
     },
     {
       underscored: true,
