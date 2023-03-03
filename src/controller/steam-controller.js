@@ -23,7 +23,9 @@ exports.getGameInfo = async (req, res, next) => {
 };
 
 exports.getGamesInfo = async (req, res, next) => {
-  const appIds = [730, 570, 582010, 990080, 1196590, 1693980, 814380];
+  const appIds = [730, 570, 582010, 990080, 1196590, 1693980, 814380, 1293160, 49520, 620,
+    400, 360430, 1296610, 1286680, 887570, 1919590, 1255630, 594650, 704270,
+    815370, 928960, 601050, 1713810, 1337010, 979690, 1389360];
   // const {currency, language} = req.query
   const currency = "THB";
   const language = "english";
