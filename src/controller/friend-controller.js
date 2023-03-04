@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Friend } = require("../models");
+const { Friend, User } = require("../models");
 const createError = require("../util/createError");
 const { FRIEND_ACCEPTER, FRIEND_PENDING } = require("../config/constant");
 
@@ -58,11 +58,12 @@ exports.findFriend = async (req, res, next) => {
     const friend = await Friend.findAll({
       where: {
         status: FRIEND_ACCEPTER,
-        [Op.or]: [
-          { requesterId: req.params.userId, accepterId: req.user.id },
-          { requesterId: req.user.id, accepterId: req.params.userId },
-        ],
+        [Op.or]: [{ accepterId: req.user.id }, { requesterId: req.user.id }],
       },
+      include: [
+        { model: User, as: "Requester", attributes: { exclude: ["password"] } },
+        { model: User, as: "Accepter", attributes: { exclude: ["password"] } },
+      ],
     });
     console.log(friend);
     res.status(200).json({ friend });
