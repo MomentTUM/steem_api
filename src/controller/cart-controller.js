@@ -28,13 +28,14 @@ exports.addToCart = async (req, res, next) => {
 exports.setCart = async (req, res, next) => {
   try {
     const game = await Game.findOne({
-      where: { steam_appid: req.params.steamAppId },
+      where: { steam_appid: req.params.steamAppId, deletedAt: null },
     });
 
     const existCart = await Cart.findOne({
       where: {
         userId: req.user.id,
         gameId: game.id,
+        deletedAt: null,
       },
     });
     if (existCart) {
@@ -44,7 +45,19 @@ exports.setCart = async (req, res, next) => {
       userId: req.user.id,
       gameId: game.id,
     });
-    res.status(200).json(newCart);
+
+    if (!newCart) {
+      createError("Cannot add the game to cart");
+    }
+    const gameInCart = await Cart.findOne({
+      where: {
+        gameId: newCart.gameId,
+        deletedAt: null,
+      },
+      include: { model: Game },
+    });
+    //response new item in cart include game model
+    res.status(200).json(gameInCart);
   } catch (err) {
     next(err);
   }
@@ -54,27 +67,28 @@ exports.setCart = async (req, res, next) => {
 //from cart table
 exports.getCart = async (req, res, next) => {
   try {
-    console.log(req.user.id);
+    // console.log(req.user.id);
     const cart = await Cart.findAll({
+      where: { deletedAt: null },
       include: { model: Game },
     });
     const cartByUserId = cart.filter(
       (el) => el.dataValues.userId === req.user.id,
     );
-    console.log(cartByUserId);
+    // console.log(cartByUserId);
     res.status(200).json(cartByUserId);
   } catch (err) {
     next(err);
   }
 };
 
-exports.deleteCart = async (req, res, next) => {
+exports.deleteCartItem = async (req, res, next) => {
   try {
-    const { cartId } = req.params;
-
+    const { itemId } = req.params;
     const cart = await Cart.findOne({
       where: {
-        id: cartId,
+        id: itemId,
+        deletedAt: null,
       },
     });
     if (!cart) {
@@ -83,29 +97,22 @@ exports.deleteCart = async (req, res, next) => {
     if (cart.userId !== req.user.id) {
       createError("You not have permission to delete item", 400);
     }
-    const result = await Cart.destroy({ where: { id: cartId } });
+    const result = await Cart.destroy({ where: { id: itemId } });
     res.status(200).json(result);
   } catch (err) {
     next(err);
   }
 };
 
-exports.removeItemFromCart = async (req, res, next) => {
+exports.removeAllItem = async (req, res, next) => {
   try {
-    const { cartId, profileId } = req.params;
-    const cart = await Cart.findOne({
+    const result = await Cart.destroy({
       where: {
-        id: cartId,
+        userId: req.user.id,
+        deletedAt: null,
       },
     });
-    if (!cart) {
-      createError("This item not match", 400);
-    }
-    if (cart.profileId !== profileId) {
-      createError("You not have permission to delete item", 400);
-    }
-    await cart.destroy({ id: cart });
-    res.status(200).json({ cart });
+    res.status(204).json(result);
   } catch (err) {
     next(err);
   }

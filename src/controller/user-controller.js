@@ -1,14 +1,6 @@
 const { User, Friend } = require("../models");
 const createError = require("../util/createError");
 const { validateCreateProfile } = require("../validator/profile-validate");
-// const {
-//   FRIEND_ACCEPTED,
-//   STATUS_UNKNOWN,
-//   STATUS_FRIEND,
-//   STATUS_ACCEPTER,
-//   STATUS_REQUESTER,
-//   STATUS_ME,
-// } = require("../config/constant");
 const { Op } = require("sequelize");
 
 exports.getAllUser = async (req, res, next) => {
@@ -26,9 +18,7 @@ exports.getUserById = async (req, res, next) => {
       where: {
         id: req.params.userId,
       },
-      attributes: {
-        exclude: ["password"],
-      },
+      attributes: { exclude: ["password"] },
     });
     if (!user) {
       createError("You not have permission to access this user", 400);
@@ -46,32 +36,6 @@ exports.getUserById = async (req, res, next) => {
         { model: User, as: "Accepter", attributes: { exclude: ["password"] } },
       ],
     });
-    // const friends = userFriends.map((el) =>
-    //   el.requesterId === +req.params.userId ? el.Accepter : el.Requester,
-    // );
-
-    // let statusWithAuthUser;
-    // if (req.user.id === +req.params.userId) {
-    //   statusWithAuthUser = STATUS_ME;
-    // } else {
-    //   const existFriend = await Friend.findOne({
-    //     where: {
-    //       [Op.or]: [
-    //         { requesterId: req.params.userId, accepterId: req.user.id },
-    //         { requesterId: req.user.id, accepterId: req.params.userId },
-    //       ],
-    //     },
-    //   });
-    //   if (!existFriend) {
-    //     statusWithAuthUser = STATUS_UNKNOWN;
-    //   } else if (existFriend.status === FRIEND_ACCEPTED) {
-    //     statusWithAuthUser = STATUS_FRIEND;
-    //   } else if (existFriend.requesterId === req.user.id) {
-    //     statusWithAuthUser = STATUS_ACCEPTER;
-    //   } else {
-    //     statusWithAuthUser = STATUS_REQUESTER;
-    //   }
-    // }
 
     res.status(200).json({ user, userFriends });
   } catch (err) {
