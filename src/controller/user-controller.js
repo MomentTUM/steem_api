@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Game } = require("../models");
 const createError = require("../util/createError");
 const { validateCreateProfile } = require("../validator/profile-validate");
 
@@ -17,6 +17,7 @@ exports.getUserById = async (req, res, next) => {
       where: {
         id: req.params.userId,
       },
+      attributes: { exclude: ["password"] },
     });
     if (!user) {
       createError("You not have permission to access this user", 400);
