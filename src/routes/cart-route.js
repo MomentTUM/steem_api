@@ -4,7 +4,9 @@ const cartController = require("../controller/cart-controller");
 
 router.get("/", cartController.getCart);
 router.post("/:steamAppId", cartController.setCart);
+router.delete("/all", cartController.removeAllItem);
 router.delete("/:itemId", cartController.deleteCartItem);
+//
 
 router.post("/:profileId/:gameId", cartController.addToCart);
 module.exports = router;

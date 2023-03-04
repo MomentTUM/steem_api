@@ -85,10 +85,10 @@ exports.getCart = async (req, res, next) => {
 exports.deleteCartItem = async (req, res, next) => {
   try {
     const { itemId } = req.params;
-    console.log("++++++++++++", itemId);
     const cart = await Cart.findOne({
       where: {
         id: itemId,
+        deletedAt: null,
       },
     });
     if (!cart) {
@@ -104,22 +104,15 @@ exports.deleteCartItem = async (req, res, next) => {
   }
 };
 
-exports.removeItemFromCart = async (req, res, next) => {
+exports.removeAllItem = async (req, res, next) => {
   try {
-    const { cartId, profileId } = req.params;
-    const cart = await Cart.findOne({
+    const result = await Cart.destroy({
       where: {
-        id: cartId,
+        userId: req.user.id,
+        deletedAt: null,
       },
     });
-    if (!cart) {
-      createError("This item not match", 400);
-    }
-    if (cart.profileId !== profileId) {
-      createError("You not have permission to delete item", 400);
-    }
-    await cart.destroy({ id: cart });
-    res.status(200).json({ cart });
+    res.status(204).json(result);
   } catch (err) {
     next(err);
   }
