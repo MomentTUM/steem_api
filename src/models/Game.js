@@ -19,28 +19,28 @@ module.exports = (sequelize, DataTypes) => {
       },
       aboutTheGame: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
         validate: {
           notEmpty: false,
         },
       },
       shortDescription: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
         validate: {
           notEmpty: false,
         },
       },
       detailedDescription: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
         validate: {
           notEmpty: false,
         },
       },
       headerImage: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
         validate: {
           notEmpty: false,
         },
@@ -48,18 +48,87 @@ module.exports = (sequelize, DataTypes) => {
       isFree: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
         validate: {
           notEmpty: false,
         },
       },
       recommendations: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
         allowNull: true,
         validate: {
           notEmpty: false,
         },
       },
       priceOverview: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      pcRequirements: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
+      MacRequirements: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
+      linuxRequirements: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
+      publishers: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      developers: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      platforms: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      categories: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      genres: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      screenshots: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      movies: {
+        type: DataTypes.JSON,
+        allowNull: true,
+        validate: {
+          notEmpty: false,
+        },
+      },
+      background: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
@@ -95,18 +164,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-    Game.hasMany(db.Screenshot, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: false,
-      },
-    });
-    Game.hasMany(db.Movie, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: false,
-      },
-    });
+
     Game.hasMany(db.Review, {
       foreignKey: {
         name: "gameId",
@@ -125,12 +183,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-    Game.hasMany(db.Platform, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: true,
-      },
-    });
+
     Game.hasMany(db.Type, {
       foreignKey: {
         name: "gameId",
@@ -143,130 +196,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-    Game.hasMany(db.Developer, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: true,
-      },
-    });
-    Game.hasMany(db.Publisher, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: true,
-      },
-    });
-    Game.hasMany(db.MacRequirement, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: true,
-      },
-    });
-    Game.hasMany(db.PcRequirement, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: true,
-      },
-    });
-    Game.hasMany(db.LinuxRequirement, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: true,
-      },
-    });
   };
 
-  // Game.associate = (db) => {
-  //   Game.hasMany(db.Transaction, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //     onDelete: "RESTRICT",
-  //   });
-
-  //   Game.hasMany(db.Library, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //     onDelete: "RESTRICT",
-  //   });
-
-  //   Game.hasMany(db.Screenshot, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //     onDelete: "RESTRICT",
-  //   });
-
-  //   Game.hasMany(db.Like, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //     onDelete: "RESTRICT",
-  //   });
-
-  //   Game.hasMany(db.Review, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //     onDelete: "RESTRICT",
-  //   });
-
-  //   Game.hasMany(db.Sale, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //     onDelete: "RESTRICT",
-  //   });
-
-  //   Game.hasMany(db.WishList, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //     onDelete: "RESTRICT",
-  //   });
-  //   Game.hasMany(db.Cart, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //   });
-  //   Game.hasMany(db.Price, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //   });
-  //   Game.hasMany(db.Platform, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //   });
-  //   Game.hasMany(db.Requirement, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //   });
-  //   Game.hasMany(db.Movie, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //   });
-  //   Game.hasMany(db.Type, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //   });
-  // };
   return Game;
 };

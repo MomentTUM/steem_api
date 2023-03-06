@@ -1,6 +1,5 @@
 const axios = require("axios");
 const createError = require("../util/createError");
-const { Game } = require("../models");
 
 exports.getGameInfo = async (req, res, next) => {
   const { appId } = req.params;

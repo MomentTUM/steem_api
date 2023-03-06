@@ -36,23 +36,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     },
   );
-
-  Platform.associate = (db) => {
-    Platform.belongsTo(db.Game, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: true,
-      },
-    });
-  };
-
-  // Platform.associate = (db) => {
-  //   Platform.belongsTo(db.Game, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //   });
-  // };
   return Platform;
 };

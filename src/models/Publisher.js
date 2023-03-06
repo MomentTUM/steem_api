@@ -22,15 +22,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     },
   );
-
-  Publisher.associate = (db) => {
-    Publisher.belongsTo(db.Game, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: false,
-      },
-    });
-  };
-
   return Publisher;
 };
