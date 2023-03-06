@@ -7,7 +7,7 @@ const cloudinary = require("../util/cloudinary");
 exports.getAllUser = async (req, res, next) => {
   try {
     const user = await User.findAll();
-    res.status(200).json({ user });
+    res.status(200).json(user);
   } catch (err) {
     next(err);
   }
@@ -24,7 +24,8 @@ exports.getUserById = async (req, res, next) => {
     if (!user) {
       createError("You not have permission to access this user", 400);
     }
-    res.status(200).json({ user });
+    //need to change user.user.id to user.id instead
+    res.status(200).json(user);
   } catch (err) {
     next(err);
   }
@@ -67,8 +68,13 @@ exports.updateProfileUser = async (req, res, next) => {
       value = { name, coverImage };
     }
 
-    const user = await User.update(value, { where: { id: req.user.id } });
-    res.status(200).json(user);
+    const result = await User.update(value, { where: { id: req.user.id } });
+    if (!result) {
+      createError("Cannot update profile", 400);
+    }
+    const user = await User.findOne({ where: { id: req.user.id } });
+
+    res.status(201).json(user);
   } catch (err) {
     next(err);
   } finally {
