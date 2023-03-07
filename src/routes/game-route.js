@@ -3,8 +3,7 @@ const router = express.Router();
 const gameController = require("../controller/game-controller");
 
 router.get("/", gameController.getAllGame);
-router.get("/name", gameController.getGameByName);
-router.get("/add/all", gameController.getGamesToData);
-router.get("/add/:appId", gameController.getGameToData);
+// router.get("/name/:steamAppid", gameController.getGameByName);
+router.get("/:steamAppid", gameController.getGame);
 
 module.exports = router;

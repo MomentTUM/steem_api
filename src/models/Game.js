@@ -135,6 +135,30 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: false,
         },
       },
+      requiredAge: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      reviews: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      website: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      releaseDate: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
+      legal_notice: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      metacritic: {
+        type: DataTypes.JSON,
+        allowNull: true,
+      },
     },
     { underscored: true, paranoid: true },
   );
