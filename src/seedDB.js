@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const { User, Game } = require("./models");
+const { User } = require("./models");
 
 const userSeed = async () => {
   const hashPassword = await bcrypt.hash("123456", 12);
@@ -18,10 +18,6 @@ const userSeed = async () => {
   let res = await User.bulkCreate(userData);
   console.log(res);
   process.exit(0);
-};
-
-const gameSeed = async () => {
-  const gameData = [];
 };
 
 userSeed();
