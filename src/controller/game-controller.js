@@ -7,6 +7,7 @@ exports.getAllGame = async (req, res, next) => {
     const game = await Game.findAll({
       where: { deletedAt: null },
     });
+    // console.log(JSON.parse(game));
     res.status(200).json(game);
   } catch (err) {
     next(err);
