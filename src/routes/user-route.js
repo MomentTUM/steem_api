@@ -5,6 +5,7 @@ const upload = require("../middlewares/upload");
 
 router.get("/", userController.getAllUser);
 router.get("/:userId", userController.getUserById);
+router.get("/search/name", userController.getUserByUserName);
 router.patch(
   "/",
   upload.fields([

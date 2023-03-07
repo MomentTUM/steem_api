@@ -3,6 +3,7 @@ const { User } = require("../models");
 const createError = require("../util/createError");
 const { validateCreateProfile } = require("../validator/profile-validate");
 const cloudinary = require("../util/cloudinary");
+const { Op } = require("sequelize");
 
 exports.getAllUser = async (req, res, next) => {
   try {
@@ -26,6 +27,20 @@ exports.getUserById = async (req, res, next) => {
     }
     //need to change user.user.id to user.id instead
     res.status(200).json(user);
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getUserByUserName = async (req, res, next) => {
+  try {
+    const { searchName = "" } = req.query;
+    const user = await User.findAll({
+      where: {
+        userName: { [Op.like]: `%${searchName}%` },
+      },
+    });
+    res.status(200).json({ user });
   } catch (err) {
     next(err);
   }
