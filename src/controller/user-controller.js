@@ -3,6 +3,7 @@ const { User } = require("../models");
 const createError = require("../util/createError");
 const { validateCreateProfile } = require("../validator/profile-validate");
 const cloudinary = require("../util/cloudinary");
+const { Op } = require("sequelize");
 
 exports.getAllUser = async (req, res, next) => {
   try {
