@@ -7,7 +7,7 @@ router.get("/", userController.getAllUser);
 router.get("/:userId", userController.getUserById);
 router.get("/search/name", userController.getUserByUserName);
 router.patch(
-  "/:userId",
+  "/",
   upload.fields([
     { name: "image", maxCount: 1 },
     { name: "coverImage", maxCount: 1 },

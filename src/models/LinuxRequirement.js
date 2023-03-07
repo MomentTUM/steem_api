@@ -29,13 +29,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     },
   );
-  LinuxRequirement.associate = (db) => {
-    LinuxRequirement.belongsTo(db.Game, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: true,
-      },
-    });
-  };
   return LinuxRequirement;
 };

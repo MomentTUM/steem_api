@@ -113,6 +113,7 @@ exports.removeAllItem = async (req, res, next) => {
       },
     });
     res.status(200).json(result);
+    // res.status(204).json(result);
   } catch (err) {
     next(err);
   }
