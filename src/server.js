@@ -19,8 +19,15 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
-  console.log(onlineUser);
-  socket.on("send_message", () => {});
+  console.log(`User connected: ${socket.id}`);
+
+  socket.on("send_message", (data) => {
+    console.log(data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
 });
 
 server.listen(process.env.PORT, () =>
