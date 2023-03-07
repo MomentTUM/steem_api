@@ -20,12 +20,26 @@ exports.requestFriend = async (req, res, next) => {
     if (existFriend) {
       createError("Already friend or pending", 400);
     }
-    await Friend.create({
+    const addFriend = await Friend.create({
       requesterId: req.user.id,
-      accepterId: req.params.userId,
+      accepterId: +req.params.userId,
       status: FRIEND_PENDING,
     });
-    res.status(201).json({ message: "success friend request" });
+
+    const newFriendLists = await Friend.findOne({
+      where: {
+        [Op.and]: [
+          { requesterId: addFriend.requesterId },
+          { accepterId: addFriend.accepterId },
+        ],
+      },
+      include: [
+        { model: User, as: "Requester", attributes: { exclude: ["password"] } },
+        { model: User, as: "Accepter", attributes: { exclude: ["password"] } },
+      ],
+    });
+
+    res.status(201).json(newFriendLists);
   } catch (err) {
     next(err);
   }
@@ -47,7 +61,20 @@ exports.acceptFriend = async (req, res, next) => {
     if (totalRowUpdate === 0) {
       createError("This user not send request to you", 400);
     }
-    res.status(201).json({ message: "Success add friend" });
+
+    const updatedFriendStatus = await Friend.findOne({
+      where: {
+        [Op.and]: [
+          { requesterId: req.params.requesterId },
+          { accepterId: req.user.id },
+        ],
+      },
+      include: [
+        { model: User, as: "Requester", attributes: { exclude: ["password"] } },
+        { model: User, as: "Accepter", attributes: { exclude: ["password"] } },
+      ],
+    });
+    res.status(201).json(updatedFriendStatus);
   } catch (err) {
     next(err);
   }
@@ -57,7 +84,7 @@ exports.findFriend = async (req, res, next) => {
   try {
     const friend = await Friend.findAll({
       where: {
-        status: FRIEND_ACCEPTER,
+        // status: FRIEND_ACCEPTER,
         [Op.or]: [{ accepterId: req.user.id }, { requesterId: req.user.id }],
       },
       include: [
@@ -66,7 +93,7 @@ exports.findFriend = async (req, res, next) => {
       ],
     });
     console.log(friend);
-    res.status(200).json({ friend });
+    res.status(200).json(friend);
   } catch (err) {
     next(err);
   }
@@ -85,7 +112,7 @@ exports.deleteFriend = async (req, res, next) => {
     if (!totalDelete) {
       createError("You do not have relationship with this user", 400);
     }
-    res.status(204).json({ message: "Success delete this friend" });
+    res.status(200).json(totalDelete);
   } catch (err) {
     next(err);
   }

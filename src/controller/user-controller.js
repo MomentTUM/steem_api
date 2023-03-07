@@ -23,21 +23,8 @@ exports.getUserById = async (req, res, next) => {
     if (!user) {
       createError("You not have permission to access this user", 400);
     }
-
-    const userFriends = await Friend.findAll({
-      where: {
-        [Op.or]: [
-          { requesterId: req.params.userId },
-          { accepterId: req.params.userId },
-        ],
-      },
-      include: [
-        { model: User, as: "Requester", attributes: { exclude: ["password"] } },
-        { model: User, as: "Accepter", attributes: { exclude: ["password"] } },
-      ],
-    });
-
-    res.status(200).json({ user, userFriends });
+    //need to change user.user.id to user.id instead
+    res.status(200).json(user);
   } catch (err) {
     next(err);
   }
