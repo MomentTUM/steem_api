@@ -29,13 +29,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     },
   );
-  PcRequirement.associate = (db) => {
-    PcRequirement.belongsTo(db.Game, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: true,
-      },
-    });
-  };
   return PcRequirement;
 };
