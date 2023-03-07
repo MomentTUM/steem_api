@@ -4,7 +4,7 @@ const createError = require("../util/createError");
 exports.addWishList = async (req, res, next) => {
   try {
     const game = await Game.findOne({
-      where: { steam_appid: req.params.steamAppId },
+      where: { steamAppid: req.params.steamAppId },
     });
     const wishList = await WishList.findOne({
       where: {
