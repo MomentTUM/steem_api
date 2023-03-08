@@ -15,9 +15,16 @@ exports.addWishList = async (req, res, next) => {
     if (wishList) {
       createError("This user already have this game", 400);
     }
-    const result = WishList.create({
-      userId: req.user.id,
-      gameId: game.id,
+    await WishList.create({ userId: req.user.id, gameId: game.id });
+
+    const result = await WishList.findOne({
+      where: {
+        userId: req.user.id,
+        gameId: game.id,
+      },
+      include: {
+        model: Game,
+      },
     });
     res.status(201).json(result);
   } catch (err) {
@@ -40,7 +47,7 @@ exports.deleteWishList = async (req, res, next) => {
       createError("You not have permission to delete wish list", 400);
     }
     await WishList.destroy({ where: { id: wishList.dataValues.id } });
-    res.status(204).json({ wishList });
+    res.status(200).json(wishList);
   } catch (err) {
     next(err);
   }
