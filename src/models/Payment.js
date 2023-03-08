@@ -8,14 +8,14 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  Payment.associate = (db) => {
-    Payment.hasMany(db.Transaction, {
-      foreignKey: {
-        name: "paymentId",
-        allowNull: false,
-      },
-    });
-  };
+  // Payment.associate = (db) => {
+  //   Payment.hasMany(db.Transaction, {
+  //     foreignKey: {
+  //       name: "paymentId",
+  //       allowNull: false,
+  //     },
+  //   });
+  // };
 
   // Payment.associate = (db) => {
   //   Payment.hasMany(db.Transaction, {

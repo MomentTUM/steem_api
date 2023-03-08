@@ -1,7 +1,15 @@
 module.exports = (sequelize, DataTypes) => {
   const Transaction = sequelize.define(
     "Transaction",
-    {},
+    {
+      token: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notEmpty: false,
+        },
+      },
+    },
     {
       underscored: true,
       paranoid: true,
@@ -21,12 +29,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
     });
-    Transaction.belongsTo(db.Payment, {
-      foreignKey: {
-        name: "paymentId",
-        allowNull: false,
-      },
-    });
+    // Transaction.belongsTo(db.Payment, {
+    //   foreignKey: {
+    //     name: "paymentId",
+    //     allowNull: false,
+    //   },
+    // });
   };
 
   // Transaction.associate = (db) => {
