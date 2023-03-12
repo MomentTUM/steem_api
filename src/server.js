@@ -19,7 +19,7 @@ io.use((socket, next) => {
 });
 
 io.on("connection", (socket) => {
-  console.log(`User connected: ${socket.id}`);
+  console.log(onlineUser);
 
   socket.on("send_message", (data) => {
     console.log(data);
