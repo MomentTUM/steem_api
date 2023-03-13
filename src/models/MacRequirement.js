@@ -29,13 +29,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     },
   );
-  MacRequirement.associate = (db) => {
-    MacRequirement.belongsTo(db.Game, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: true,
-      },
-    });
-  };
   return MacRequirement;
 };

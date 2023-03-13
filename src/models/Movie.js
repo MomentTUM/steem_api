@@ -34,23 +34,5 @@ module.exports = (sequelize, DataTypes) => {
     { underscored: true, paranoid: true },
   );
 
-  Movie.associate = (db) => {
-    Movie.belongsTo(db.Game, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: false,
-      },
-    });
-  };
-
-  // Movie.associate = (db) => {
-  //   Movie.belongsTo(db.Game, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //   });
-  // };
-
   return Movie;
 };

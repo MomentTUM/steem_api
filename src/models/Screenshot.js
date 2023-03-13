@@ -23,24 +23,5 @@ module.exports = (sequelize, DataTypes) => {
     },
   );
 
-  Screenshot.associate = (db) => {
-    Screenshot.belongsTo(db.Game, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: false,
-      },
-    });
-  };
-
-  // Screenshot.associate = (db) => {
-  //   Screenshot.belongsTo(db.Game, {
-  //     foreignKey: {
-  //       name: "gameId",
-  //       allowNull: false,
-  //     },
-  //     onDelete: "RESTRICT",
-  //   });
-  // };
-
   return Screenshot;
 };

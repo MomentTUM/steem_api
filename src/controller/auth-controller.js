@@ -43,6 +43,7 @@ exports.register = async (req, res, next) => {
       createError("Email or username is already used", 400);
     }
     value.password = await bcrypt.hash(value.password, 12);
+    User.create(value);
 
     res.status(201).json({ message: "Register success" });
   } catch (err) {

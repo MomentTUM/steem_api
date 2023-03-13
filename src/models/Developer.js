@@ -22,15 +22,5 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true,
     },
   );
-
-  Developer.associate = (db) => {
-    Developer.belongsTo(db.Game, {
-      foreignKey: {
-        name: "gameId",
-        allowNull: false,
-      },
-    });
-  };
-
   return Developer;
 };

@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const http = require("http");
 const server = http.createServer(app);
+require("dotenv").config();
 
 const errorMiddleware = require("./middlewares/error");
 const notFoundMiddleware = require("./middlewares/notFound");
@@ -16,9 +17,8 @@ const cartRoute = require("./routes/cart-route");
 const userRoute = require("./routes/user-route");
 const gameRoute = require("./routes/game-route");
 const adminRoute = require("./routes/admin-route");
-// const { sequelize } = require("./models")
-
-// sequelize.sync({ force: true })
+const checkoutRoute = require("./routes/checkout-route");
+const transactionRoute = require("./routes/transaction-route");
 
 app.use(cors());
 app.use(express.json());
@@ -33,6 +33,8 @@ app.use("/cart", authenticateMiddleware, cartRoute);
 app.use("/user", authenticateMiddleware, userRoute);
 app.use("/admin", adminRoute);
 app.use("/game", gameRoute);
+app.use("/checkout", checkoutRoute);
+app.use("/transaction", authenticateMiddleware, transactionRoute);
 
 app.use(notFoundMiddleware);
 
