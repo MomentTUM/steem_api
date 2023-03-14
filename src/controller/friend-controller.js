@@ -92,7 +92,7 @@ exports.findFriend = async (req, res, next) => {
         { model: User, as: "Accepter", attributes: { exclude: ["password"] } },
       ],
     });
-    console.log(friend);
+    // console.log(friend);
     res.status(200).json(friend);
   } catch (err) {
     next(err);

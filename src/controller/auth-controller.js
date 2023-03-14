@@ -29,7 +29,7 @@ exports.register = async (req, res, next) => {
   try {
     const value = validateRegister(req.body);
     // const value = req.body;
-    console.log(value);
+    // console.log(value);
 
     const user = await User.findOne({
       where: {
@@ -53,7 +53,7 @@ exports.register = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
     const value = validateLogin(req.body);
 
     const user = await User.findOne({
@@ -92,7 +92,7 @@ exports.login = async (req, res, next) => {
 
 exports.deleteUser = async (req, res, next) => {
   try {
-    console.log(req.params);
+    // console.log(req.params);
     const deleteUser = await User.findOne({
       where: {
         id: req.params.userId,

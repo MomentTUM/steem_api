@@ -32,7 +32,7 @@ exports.updateProfile = async (req, res, next) => {
       image: req.files?.image[0].path,
       coverImage: req.files?.coverImage[0].path,
     });
-    console.log(req.params.profileId);
+    // console.log(req.params.profileId);
     const result = await Profile.update(
       {
         name: value.name,
@@ -55,13 +55,13 @@ exports.getProfileById = async (req, res, next) => {
   try {
     const profile = await Profile.findOne({
       where: {
-        id: req.params.profileId
-      }
-    })
+        id: req.params.profileId,
+      },
+    });
     if (!profile) {
-      createError("You not have permission to access this profile")
+      createError("You not have permission to access this profile");
     }
-    res.status(200).json({ profile })
+    res.status(200).json({ profile });
   } catch (err) {
     next(err);
   }
