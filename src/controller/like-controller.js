@@ -3,7 +3,7 @@ const createError = require("../util/createError");
 
 exports.createLike = async (req, res, next) => {
   try {
-    console.log(req.params.gameId);
+    // console.log(req.params.gameId);
     const existLike = await Like.findOne({
       where: {
         userId: req.params.userId,
