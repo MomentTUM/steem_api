@@ -25,10 +25,10 @@ exports.getGame = async (req, res, next) => {
 
 exports.getGameByName = async (req, res, next) => {
   try {
-    const { name } = req.query;
+    const { search } = req.query;
     const game = await Game.findAll({
       where: {
-        [Op.like]: `%${name}%`,
+        name: { [Op.like]: `%${search}%` },
         deletedAt: null,
       },
     });
